@@ -14,7 +14,7 @@
             <label for="">Digite o nome do video</label>
             <input type="text" id="nome">
             <label for="">Envie o video</label>
-            <input type="text" id="video">
+            <input type="file" id="video">
             <label for="">Descricão do video</label>
             <input type="text" id="descricao">
             <button onclick="postarDados()">enviar dados</button>
@@ -24,15 +24,19 @@
     <script>
         async function postarDados() {
             let nome = document.getElementById('nome').value
-            let video = document.getElementById('video').value
+            let video = document.getElementById('video')
             let descricao = document.getElementById('descricao').value
+            const videoFile = video.files[0]
+            const formData= new FormData()
+
+            formData.append('nome',nome)
+            formData.append('descricao',descricao)
+            formData.append('video',videoFile)
+
 
             let res = await fetch('http://localhost:3000/video', {
                 method: "POST",
-                headers: {
-                    "Content-Type": 'application/json'
-                },
-                body: JSON.stringify({ nome, video, descricao })
+                body: formData
             })
         }
 
