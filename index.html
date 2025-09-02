@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <h1>Area admin</h1>
+            <label for="">Digite o nome do video</label>
+            <input type="text" id="nome">
+            <label for="">Envie o video</label>
+            <input type="text" id="video">
+            <label for="">Descricão do video</label>
+            <input type="text" id="descricao">
+            <button onclick="postarDados()">enviar dados</button>
+        </div>
+    </div>
+
+    <script>
+        let nome = document.getElementById('nome').value
+        let video = document.getElementById('video').value
+        let descricao = document.getElementById('descricao').value
+        async function postarDados() {
+            let res = await fetch('http://localhost:3000/video',{
+                method:"POST",
+                headers:{
+                    "Content-Type":'application/json'
+                },
+                body:JSON.stringify({nome,video,descricao})
+            })
+        }
+
+    </script>
+</body>
+</html>
