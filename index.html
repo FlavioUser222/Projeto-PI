@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <div class="container">
         <div class="content">
@@ -20,19 +22,22 @@
     </div>
 
     <script>
-        let nome = document.getElementById('nome').value
-        let video = document.getElementById('video').value
-        let descricao = document.getElementById('descricao').value
         async function postarDados() {
-            let res = await fetch('http://localhost:3000/video',{
-                method:"POST",
-                headers:{
-                    "Content-Type":'application/json'
+            let nome = document.getElementById('nome').value
+            let video = document.getElementById('video').value
+            let descricao = document.getElementById('descricao').value
+
+            let res = await fetch('http://localhost:3000/video', {
+                method: "POST",
+                headers: {
+                    "Content-Type": 'application/json'
                 },
-                body:JSON.stringify({nome,video,descricao})
+                body: JSON.stringify({ nome, video, descricao })
             })
         }
 
+
     </script>
 </body>
+
 </html>
