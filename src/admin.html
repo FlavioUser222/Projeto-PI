@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div class="container">
+        <input type="text" id="user">
+        <input type="text" id="senha">
+        <button onclick="postarDados()"></button>
+    </div>
+
+    <script>
+        async function postarDados() {
+            let user = document.getElementById('user')
+
+            if (!isNaN(user) || user == "" || user == null) {
+                return
+            }
+
+            let senha = document.getElementById('senha')
+
+            let res = await fetch('', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ user, senha })
+            })
+        }
+    </script>
+
+</body>
+
+</html>
