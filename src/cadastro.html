@@ -12,7 +12,8 @@
         <h1>Cadastrar</h1>
         <input type="text" id="user">
         <input type="password" id="senha">
-        <button onclick="postarDados()"></button>
+        <button onclick="postarDados()">Cadastrar-se</button>
+
     </div>
 
     <script>
@@ -27,7 +28,7 @@
 
             let senha = document.getElementById('senha')
 
-            let res = await fetch('http://localhost:3000/login', {
+            let res = await fetch('http://localhost:3000/cadastro', {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json"
