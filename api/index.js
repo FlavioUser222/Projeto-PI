@@ -29,6 +29,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage })
 
 let dados = []
+let logins = []
+let cadastros = []
 
 app.use(express.json()) // para outras rotas que recebem JSON puro
 
@@ -37,7 +39,6 @@ app.get('/videos', (req, res) => {
   res.json(dados)
 })
 
-// Rota para receber o upload com multer (campo 'video')
 app.post('/video', upload.single('video'), (req, res) => {
   const { nome, descricao } = req.body
   const video = req.file // objeto com dados do arquivo
@@ -55,6 +56,39 @@ app.post('/video', upload.single('video'), (req, res) => {
   console.log('Video salvo:', nome)
   res.send('Video salvo com sucesso')
 })
+
+
+app.get('/logins', (req, res) => {
+  res.json(logins)
+})
+
+app.post('/login', (req, res) => {
+  const { user, senha } = req.body
+
+  dados.push({
+    user, senha
+  })
+
+  console.log('Dados salvos:', user)
+  res.send('Dados salvos com sucesso')
+})
+
+app.get('/cadastros', (req, res) => {
+  res.json(cadastros)
+})
+
+app.post('/cadastro', (req, res) => {
+  const { user, senha } = req.body
+
+  dados.push({
+    user, senha
+  })
+
+  console.log('Dados salvos:', user)
+  res.send('Dados salvos com sucesso')
+
+})
+
 
 app.listen(3000, () => {
   console.log('Servidor rodando na porta 3000')
