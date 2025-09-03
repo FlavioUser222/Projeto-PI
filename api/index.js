@@ -3,6 +3,25 @@ import cors from 'cors'
 import multer from 'multer'
 import path from 'path'
 import fs from 'fs'
+import sqlite3 from 'sqlite3'
+
+const db = new sqlite3.Database('db.sqlite3')
+
+db.serialize(() => {
+    db.run(`CREATE TABLE IF NOT EXISTS videos(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nome varchar(100) NOT NULL,
+        video TEXT NOT NULL,
+        descricao TEXT NOT NULL
+    )`)
+    db.run(`CREATE TABLE IF NOT EXISTS cadastros(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nome varchar(100) NOT NULL,
+        senha varchar(100) NOT NULL,
+    )`)
+
+})
+
 
 // Verifica se a pasta 'uploads' existe, caso contrário cria
 const uploadsDir = 'uploads/'
@@ -29,7 +48,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage })
 
 let dados = []
-let logins = []
 let cadastros = []
 
 app.use(express.json()) // para outras rotas que recebem JSON puro
@@ -58,20 +76,6 @@ app.post('/video', upload.single('video'), (req, res) => {
 })
 
 
-app.get('/logins', (req, res) => {
-  res.json(logins)
-})
-
-app.post('/login', (req, res) => {
-  const { user, senha } = req.body
-
-  dados.push({
-    user, senha
-  })
-
-  console.log('Dados salvos:', user)
-  res.send('Dados salvos com sucesso')
-})
 
 app.get('/cadastros', (req, res) => {
   res.json(cadastros)
