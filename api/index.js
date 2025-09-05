@@ -19,7 +19,6 @@ db.serialize(() => {
         nome varchar(100) NOT NULL,
         senha varchar(100) NOT NULL,
     )`)
-
 })
 
 
@@ -47,14 +46,15 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage })
 
-let dados = []
-let cadastros = []
 
-app.use(express.json()) // para outras rotas que recebem JSON puro
+app.use(express.json())
 
-// Rota para listar os vídeos
+
 app.get('/videos', (req, res) => {
-  res.json(dados)
+  db.all(`SELECT * FROM videos`,[],(err,rows)=>{
+    res.json(rows)
+  })
+
 })
 
 app.post('/video', upload.single('video'), (req, res) => {
@@ -65,31 +65,27 @@ app.post('/video', upload.single('video'), (req, res) => {
     return res.status(400).send('Arquivo de vídeo não enviado')
   }
 
-  dados.push({
-    nome,
-    descricao,
-    videoPath: video.path // caminho do arquivo salvo no servidor
-  })
+  db.run(`INSERT INTO videos(nome,descricao,videoPath) VALUES (?,?,?)`,[nome,descricao,video.path])
 
-  console.log('Video salvo:', nome)
   res.send('Video salvo com sucesso')
 })
 
 
 
 app.get('/cadastros', (req, res) => {
-  res.json(cadastros)
+  db.all(`SELECT * FROM cadastros`,[],(err,rows)=>{
+    res.json(rows)
+  })
+
 })
 
 app.post('/cadastro', (req, res) => {
   const { user, senha } = req.body
 
-  dados.push({
-    user, senha
-  })
+  db.run(`INSERT INTO cadastros(user,senha) VALUES (?,?)`,[user,senha])
 
-  console.log('Dados salvos:', user)
   res.send('Dados salvos com sucesso')
+  console.log('Dados salvos:', user)
 
 })
 
