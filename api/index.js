@@ -17,7 +17,7 @@ db.serialize(() => {
     db.run(`CREATE TABLE IF NOT EXISTS cadastros(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nome varchar(100) NOT NULL,
-        senha varchar(100) NOT NULL,
+        senha varchar(100) NOT NULL
     )`)
 })
 
@@ -65,7 +65,7 @@ app.post('/video', upload.single('video'), (req, res) => {
     return res.status(400).send('Arquivo de vídeo não enviado')
   }
 
-  db.run(`INSERT INTO videos(nome,descricao,videoPath) VALUES (?,?,?)`,[nome,descricao,video.path])
+  db.run(`INSERT INTO videos(nome,descricao,video) VALUES (?,?,?)`,[nome,descricao,video.path])
 
   res.send('Video salvo com sucesso')
 })
@@ -82,7 +82,7 @@ app.get('/cadastros', (req, res) => {
 app.post('/cadastro', (req, res) => {
   const { user, senha } = req.body
 
-  db.run(`INSERT INTO cadastros(user,senha) VALUES (?,?)`,[user,senha])
+  db.run(`INSERT INTO cadastros(nome,senha) VALUES (?,?)`,[user,senha])
 
   res.send('Dados salvos com sucesso')
   console.log('Dados salvos:', user)
