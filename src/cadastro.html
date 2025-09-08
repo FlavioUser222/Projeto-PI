@@ -20,13 +20,13 @@
 
         async function postarDados() {
 
-            let user = document.getElementById('user')
+            let user = document.getElementById('user').value
 
             if (!isNaN(user) || user == "" || user == null) {
                 return
             }
 
-            let senha = document.getElementById('senha')
+            let senha = document.getElementById('senha').value
 
             let res = await fetch('http://localhost:3000/cadastro', {
                 method: 'POST',
