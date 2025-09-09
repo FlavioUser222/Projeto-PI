@@ -8,13 +8,13 @@ import sqlite3 from 'sqlite3'
 const db = new sqlite3.Database('db.sqlite3')
 
 db.serialize(() => {
-    db.run(`CREATE TABLE IF NOT EXISTS videos(
+  db.run(`CREATE TABLE IF NOT EXISTS videos(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nome varchar(100) NOT NULL,
         video TEXT NOT NULL,
         descricao TEXT NOT NULL
     )`)
-    db.run(`CREATE TABLE IF NOT EXISTS cadastros(
+  db.run(`CREATE TABLE IF NOT EXISTS cadastros(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nome varchar(100) NOT NULL,
         senha varchar(100) NOT NULL
@@ -30,6 +30,8 @@ if (!fs.existsSync(uploadsDir)) {
 
 const app = express()
 app.use(cors())
+app.use('/uploads', express.static('uploads'))
+
 
 // Configuração do multer para salvar arquivos na pasta 'uploads'
 const storage = multer.diskStorage({
@@ -51,7 +53,7 @@ app.use(express.json())
 
 
 app.get('/videos', (req, res) => {
-  db.all(`SELECT * FROM videos`,[],(err,rows)=>{
+  db.all(`SELECT * FROM videos`, [], (err, rows) => {
     res.json(rows)
   })
 
@@ -65,7 +67,7 @@ app.post('/video', upload.single('video'), (req, res) => {
     return res.status(400).send('Arquivo de vídeo não enviado')
   }
 
-  db.run(`INSERT INTO videos(nome,descricao,video) VALUES (?,?,?)`,[nome,descricao,video.path])
+  db.run(`INSERT INTO videos(nome,descricao,video) VALUES (?,?,?)`, [nome, descricao, video.path])
 
   res.send('Video salvo com sucesso')
 })
@@ -73,7 +75,7 @@ app.post('/video', upload.single('video'), (req, res) => {
 
 
 app.get('/cadastros', (req, res) => {
-  db.all(`SELECT * FROM cadastros`,[],(err,rows)=>{
+  db.all(`SELECT * FROM cadastros`, [], (err, rows) => {
     res.json(rows)
   })
 
@@ -82,7 +84,7 @@ app.get('/cadastros', (req, res) => {
 app.post('/cadastro', (req, res) => {
   const { user, senha } = req.body
 
-  db.run(`INSERT INTO cadastros(nome,senha) VALUES (?,?)`,[user,senha])
+  db.run(`INSERT INTO cadastros(nome,senha) VALUES (?,?)`, [user, senha])
 
   res.send('Dados salvos com sucesso')
   console.log('Dados salvos:', user)
