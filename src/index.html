@@ -53,7 +53,9 @@
             <label for="">Digite o nome do video</label>
             <input type="text" id="nome">
             <label for="">Envie o video</label>
-            <input type="file" id="video">
+            <input type="file" id="video" accept="video/*">
+            <label for="">Thumbnail do video</label>
+            <input type="file" id="thumb"  accept="image/*">
             <label for="">Descricão do video</label>
             <input type="text" id="descricao">
             <button onclick="postarDados()">enviar dados</button>
@@ -65,12 +67,14 @@
             let nome = document.getElementById('nome').value
             let video = document.getElementById('video')
             let descricao = document.getElementById('descricao').value
+            const thumbFile = document.getElementById('thumb').files[0]
             const videoFile = video.files[0]
             const formData = new FormData()
 
             formData.append('nome', nome)
             formData.append('descricao', descricao)
             formData.append('video', videoFile)
+            formData.append('thumbnail', thumbFile)
 
 
             let res = await fetch('http://localhost:3000/video', {

@@ -12,7 +12,8 @@ db.serialize(() => {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nome varchar(100) NOT NULL,
         video TEXT NOT NULL,
-        descricao TEXT NOT NULL
+        descricao TEXT NOT NULL,
+        thumbnail TEXT NOT NULL
     )`)
   db.run(`CREATE TABLE IF NOT EXISTS cadastros(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -59,15 +60,19 @@ app.get('/videos', (req, res) => {
 
 })
 
-app.post('/video', upload.single('video'), (req, res) => {
+app.post('/video', upload.fields([
+  { name: 'video', maxCount: 1 },
+  { name: 'thumbnail', maxCount: 1 }
+]), (req, res) => {
   const { nome, descricao } = req.body
-  const video = req.file // objeto com dados do arquivo
+  const video = req.files['video'] ? req.files['video'][0] : null
+  const thumbnail = req.files['thumbnail'] ? req.files['thumbnail'][0] : null
 
-  if (!video) {
+  if (!video || !thumbnail) {
     return res.status(400).send('Arquivo de vídeo não enviado')
   }
 
-  db.run(`INSERT INTO videos(nome,descricao,video) VALUES (?,?,?)`, [nome, descricao, video.filename])
+  db.run(`INSERT INTO videos(nome,descricao,video,thumbnail) VALUES (?,?,?,?)`, [nome, descricao, video.filename, thumbnail.filename])
 
   res.send('Video salvo com sucesso')
 })
