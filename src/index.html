@@ -7,31 +7,45 @@
     <title>Document</title>
 </head>
 <style>
-    .container{
+    *{
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
+    .container {
         display: flex;
         flex-direction: column;
         align-items: center;
     }
-    .content{
+
+    .content {
         display: flex;
         flex-direction: column;
         align-items: center;
         width: 100%;
         max-width: 900px;
     }
-
-
-
-
-
-
-
-
+    .dashboard-Tab{
+        width: 80px;
+        padding: 20px;
+        position: absolute;
+        left: 0;
+        height: 100vh;
+        background-color: grey;
+    }
 
 
 </style>
+
 <body>
     <div class="container" id="container">
+        <div class="dashboard-Tab">
+            <div class="icons">
+                <a href=""><img src="" alt=""></a>
+            </div>
+
+        </div>
+
         <div class="content" id="content">
             <h1>Area admin</h1>
             <label for="">Digite o nome do video</label>
