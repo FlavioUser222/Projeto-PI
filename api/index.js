@@ -67,7 +67,7 @@ app.post('/video', upload.single('video'), (req, res) => {
     return res.status(400).send('Arquivo de vídeo não enviado')
   }
 
-  db.run(`INSERT INTO videos(nome,descricao,video) VALUES (?,?,?)`, [nome, descricao, video.path])
+  db.run(`INSERT INTO videos(nome,descricao,video) VALUES (?,?,?)`, [nome, descricao, video.filename])
 
   res.send('Video salvo com sucesso')
 })
