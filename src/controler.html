@@ -1,51 +1,177 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Responsivo</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .sidebar {
+            width: 180px;
+            background-color: #333;
+            color: #fff;
+            padding: 20px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .sidebar.collapsed {
+            transform: translateX(-100%);
+        }
+
+        .sidebar .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            margin-left: 16px;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .sidebar .icons {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sidebar .icons a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.3s;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .sidebar .icons a:hover {
+            background-color: #555;
+        }
+
+
+        video {
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .sidebar .menu-toggle {
+                display: block;
+            }
+
+            .content {
+                margin-left: 0;
+                padding-top: 80px;
+            }
+
+            #menu-btn {
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                z-index: 1100;
+                background: #333;
+                color: white;
+                border: none;
+                padding: 10px 14px;
+                font-size: 20px;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-    <div class="container" id="container">
-        <div class="content" id="content">
-            <h1>Gerenciar Videos</h1>
+    <button id="menu-btn">☰</button>
+
+
+    <div class="sidebar" id="sidebar">
+        <div class="icons">
+            <a href="index.html">🏠 <span>Home</span></a>
+            <a href="controler.html">🎥 <span>Vídeos</span></a>
+            <a href="#">⚙️ <span>Configurações</span></a>
         </div>
     </div>
 
+    <div class="container">
+        <h1>Gerenciar Vídeos</h1>
+        <div class="content" id="content">
+
+        </div>
+    </div>
     <script>
 
+        const menuBtn = document.getElementById('menu-btn');
+        const sidebar = document.getElementById('sidebar');
 
+        menuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('show');
+        });
+
+        // Função para carregar vídeos dinamicamente
         async function mostrarVideo() {
-            let res = await fetch('http://localhost:3000/videos')
-            let videos = await res.json()
-            let content = document.getElementById('content')
-            videos.forEach(video => {
-                let videoElement = document.createElement('video')
-                videoElement.src = `http://localhost:3000/uploads/${video.video}`
-                videoElement.controls = true
-                videoElement.preload = 'metadata'
-                videoElement.width = 400
-                videoElement.height = 225
+            try {
+                let res = await fetch('http://localhost:3000/videos');
+                let videos = await res.json();
+                let content = document.getElementById('content');
 
-                videoElement.poster = `http://localhost:3000/uploads/${video.thumbnail}`
-
-
-                content.appendChild(videoElement)
-            })
-
+                videos.forEach(video => {
+                    let videoElement = document.createElement('video');
+                    videoElement.src = `http://localhost:3000/uploads/${video.video}`;
+                    videoElement.controls = true;
+                    videoElement.preload = 'metadata';
+                    videoElement.width = 400;
+                    videoElement.height = 225;
+                    videoElement.poster = `http://localhost:3000/uploads/${video.thumbnail}`;
+                    content.appendChild(videoElement);
+                });
+            } catch (err) {
+                console.error('Erro ao carregar vídeos:', err);
+            }
         }
 
-        mostrarVideo()
-
+        mostrarVideo();
     </script>
-
-
-
-
-
 </body>
 
 </html>

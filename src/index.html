@@ -7,11 +7,12 @@
     <title>Document</title>
 </head>
 <style>
-    *{
+    * {
         padding: 0;
         margin: 0;
         box-sizing: border-box;
     }
+
     .container {
         display: flex;
         flex-direction: column;
@@ -27,37 +28,35 @@
         max-width: 900px;
         gap: 10px;
     }
-    .dashboard-Tab{
+
+    .dashboard-Tab {
         width: 80px;
         padding: 20px;
-        position: absolute;
+        position: fixed;
         left: 0;
         height: 100vh;
         background-color: grey;
     }
-
-
 </style>
 
 <body>
     <div class="container" id="container">
         <div class="dashboard-Tab">
             <div class="icons">
-                <a href="controler.html"><img src="../options-icon-30.png" alt=""></a>
-                <a href=""><img src="" alt=""></a>
-                <a href=""><img src="" alt=""></a>
+                <a href="index.html">🏠 Home</a>
+                <a href="controler.html">🎥 Vídeos</a>
+                <a href="#">⚙️ Configurações</a>
             </div>
-
         </div>
 
         <div class="content" id="content">
             <h1>Area admin</h1>
             <label for="">Digite o nome do video</label>
-            <input type="text" id="nome" required> 
+            <input type="text" id="nome" required>
             <label for="">Envie o video</label>
             <input type="file" id="video" accept="video/*" required>
             <label for="">Thumbnail do video</label>
-            <input type="file" id="thumb"  accept="image/*" required>
+            <input type="file" id="thumb" accept="image/*" required>
             <label for="">Descricão do video</label>
             <input type="text" id="descricao" required>
             <button onclick="postarDados()">Enviar dados</button>
