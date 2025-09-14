@@ -143,10 +143,6 @@ app.put('/video/:id', upload.fields([
 
 
 
-
-
-
-
 app.get('/cadastros', (req, res) => {
   db.all(`SELECT * FROM cadastros`, [], (err, rows) => {
     res.json(rows)
