@@ -22,12 +22,18 @@
         }
 
         .content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        #videosContent {
             display: grid;
             grid-template-columns: 1fr 1fr;
             align-items: center;
             justify-content: center;
             gap: 30px;
-            margin-top: 50px;
         }
 
         .sidebar {
@@ -85,7 +91,26 @@
 
             border-radius: 8px;
         }
-
+        .videoCard{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        button{
+            padding: 8px 12px;
+            text-align: center;
+            background-color: #555;
+            color: #fff;
+            border-radius: 10px;
+        }
+        .divButtons{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            width: 100%;
+        }
 
         @media (max-width: 768px) {
             .sidebar {
@@ -138,6 +163,9 @@
     <div class="container">
         <h1>Gerenciar Vídeos</h1>
         <div class="content" id="content">
+            <div class="videosContent" id="videosContent">
+
+            </div>
 
         </div>
     </div>
@@ -150,27 +178,61 @@
             sidebar.classList.toggle('show');
         });
 
-        // Função para carregar vídeos dinamicamente
+
         async function mostrarVideo() {
             try {
                 let res = await fetch('http://localhost:3000/videos');
                 let videos = await res.json();
-                let content = document.getElementById('content');
+                let videosContent = document.getElementById('videosContent');
 
-                videos.forEach(video => {
+                videos.forEach((video,index) => {
+
                     let videoElement = document.createElement('video');
+                    let videoCard = document.createElement('div')
+                    videoCard.className = "videoCard"
+
+                    // Define os atributos do vídeo
                     videoElement.src = `http://localhost:3000/uploads/${video.video}`;
                     videoElement.controls = true;
                     videoElement.preload = 'metadata';
                     videoElement.width = 400;
                     videoElement.height = 225;
                     videoElement.poster = `http://localhost:3000/uploads/${video.thumbnail}`;
-                    content.appendChild(videoElement);
+                    videoElement.style.borderRadius = '8px';
+
+
+
+                    let divButtons = document.createElement('div')
+                    divButtons.className = "divButtons"
+                    divButtons.innerHTML = `<button>Editar</button><button onclick='${excluirVideo(index)}'>Excluir</button>`
+
+                    videoCard.appendChild(videoElement)
+                    videoCard.appendChild(divButtons)
+
+                    videosContent.appendChild(videoCard);
                 });
             } catch (err) {
                 console.error('Erro ao carregar vídeos:', err);
             }
         }
+
+
+        async function excluirVideo(id) {
+            let res = await fetch('',{
+                method:"DELETE"
+            })
+        }
+        async function editarVideo(id) {
+            let res = await fetch('',{
+                method:"PUT"
+            })
+        }
+
+
+
+
+
+
 
         mostrarVideo();
     </script>
