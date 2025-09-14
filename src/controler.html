@@ -185,7 +185,7 @@
                 let videos = await res.json();
                 let videosContent = document.getElementById('videosContent');
 
-                videos.forEach((video,index) => {
+                videos.forEach((video) => {
 
                     let videoElement = document.createElement('video');
                     let videoCard = document.createElement('div')
@@ -204,7 +204,8 @@
 
                     let divButtons = document.createElement('div')
                     divButtons.className = "divButtons"
-                    divButtons.innerHTML = `<button>Editar</button><button onclick='${excluirVideo(index)}'>Excluir</button>`
+                    divButtons.innerHTML = `<button onclick="editarVideo(${video.id})">Editar</button>
+                    <button onclick="excluirVideo(${video.id})">Excluir</button>`
 
                     videoCard.appendChild(videoElement)
                     videoCard.appendChild(divButtons)
@@ -218,10 +219,11 @@
 
 
         async function excluirVideo(id) {
-            let res = await fetch('',{
+            let res = await fetch(`http://localhost:3000/video/${id}`,{
                 method:"DELETE"
             })
         }
+
         async function editarVideo(id) {
             let res = await fetch('',{
                 method:"PUT"

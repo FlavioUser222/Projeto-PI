@@ -78,6 +78,74 @@ app.post('/video', upload.fields([
 })
 
 
+app.delete('/video/:id', (req, res) => {
+  const { id } = req.params;
+
+  db.get(`SELECT video, thumbnail FROM videos WHERE id = ?`, [id], (err, row) => {
+    if (err || !row) {
+      return res.status(404).json({ error: 'Vídeo não encontrado' });
+    }
+
+    // Deleta os arquivos do sistema de arquivos
+    const videoPath = path.join(uploadsDir, row.video);
+    const thumbPath = path.join(uploadsDir, row.thumbnail);
+
+    if (fs.existsSync(videoPath)) fs.unlinkSync(videoPath);
+    if (fs.existsSync(thumbPath)) fs.unlinkSync(thumbPath);
+
+    // Agora remove do banco
+    db.run(`DELETE FROM videos WHERE id = ?`, [id], (err) => {
+      if (err) {
+        return res.status(500).json({ error: 'Erro ao deletar vídeo do banco' });
+      }
+
+      return res.status(204).send(); // Sucesso, sem conteúdo
+    });
+  });
+});
+
+
+
+app.put('/video/:id', upload.fields([
+  { name: 'thumbnail', maxCount: 1 }
+]), (req, res) => {
+  const { id } = req.params;
+  const { nome, descricao } = req.body;
+  const thumbnail = req.files['thumbnail'] ? req.files['thumbnail'][0] : null;
+
+  // Primeiro, busca o vídeo atual para obter o nome da thumbnail antiga
+  db.get(`SELECT thumbnail FROM videos WHERE id = ?`, [id], (err, row) => {
+    if (err || !row) {
+      return res.status(404).json({ error: 'Vídeo não encontrado' });
+    }
+
+    let novoThumbnail = row.thumbnail; // por padrão, mantém a thumbnail antiga
+
+    if (thumbnail) {
+      // Deleta a thumbnail antiga
+      const thumbPath = path.join(uploadsDir, row.thumbnail);
+      if (fs.existsSync(thumbPath)) fs.unlinkSync(thumbPath);
+
+      // Atualiza o nome da nova thumbnail
+      novoThumbnail = thumbnail.filename;
+    }
+
+    // Atualiza os dados no banco
+    db.run(`UPDATE videos SET nome = ?, descricao = ?, thumbnail = ? WHERE id = ?`, [nome, descricao, novoThumbnail, id], function (err) {
+      if (err) {
+        return res.status(500).json({ error: 'Erro ao atualizar vídeo' });
+      }
+
+      res.json({ message: 'Vídeo atualizado com sucesso' });
+    });
+  });
+});
+
+
+
+
+
+
 
 app.get('/cadastros', (req, res) => {
   db.all(`SELECT * FROM cadastros`, [], (err, rows) => {
