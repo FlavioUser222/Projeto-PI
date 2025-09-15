@@ -321,11 +321,9 @@
 
             if (res.ok) {
                 alert("Vídeo atualizado com sucesso!");
-                document.getElementById('modal').classList.remove('show');
-
-                // Opcional: recarrega os vídeos
-                document.getElementById('videosContent').innerHTML = '';
-                mostrarVideo();
+                document.getElementById('modal').classList.remove('show')
+                document.getElementById('videosContent').innerHTML = ''
+                mostrarVideo()
             } else {
                 alert("Erro ao atualizar o vídeo.");
             }
