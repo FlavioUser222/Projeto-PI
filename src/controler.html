@@ -225,7 +225,7 @@
                 <input type="file" id="thumb" accept="image/*" required>
                 <label for="">Descricão do video</label>
                 <input type="text" id="descricao" required>
-                <button onclick="">Editar video</button>
+                <button id="botaoEditar">Editar video</button>
             </div>
         </div>
 
@@ -237,6 +237,7 @@
 
         const menuBtn = document.getElementById('menu-btn');
         const sidebar = document.getElementById('sidebar');
+        const videoEditadoId = null
 
         menuBtn.addEventListener('click', () => {
             sidebar.classList.toggle('show');
@@ -268,7 +269,7 @@
 
                     let divButtons = document.createElement('div')
                     divButtons.className = "divButtons"
-                    divButtons.innerHTML = `<button onclick="editarVideo(${video.id})">Editar</button>
+                    divButtons.innerHTML = `<button onclick="abrirModal(${video.id})">Editar</button>
                     <button onclick="excluirVideo(${video.id})">Excluir</button>`
 
                     videoCard.appendChild(videoElement)
@@ -288,8 +289,19 @@
             })
         }
 
+
+        async function abrirModal(id) {
+            videoEditandoId = id
+            let modal = document.getElementById('modal')
+            modal.classList.add('show')
+            document.getElementById('botaoEditar').onclick = () => editarVideo(videoEditandoId)
+
+        }
+
+
         async function editarVideo(id) {
-           let nome = document.getElementById('nome').value
+
+            let nome = document.getElementById('nome').value
             let video = document.getElementById('video')
             let descricao = document.getElementById('descricao').value
             const thumbFile = document.getElementById('thumb').files[0]
@@ -303,8 +315,23 @@
 
             let res = await fetch(`http://localhost:3000/video/${id}`, {
                 method: "PUT",
-                body:formData
+                body: formData
             })
+
+
+            if (res.ok) {
+                alert("Vídeo atualizado com sucesso!");
+                document.getElementById('modal').classList.remove('show');
+
+                // Opcional: recarrega os vídeos
+                document.getElementById('videosContent').innerHTML = '';
+                mostrarVideo();
+            } else {
+                alert("Erro ao atualizar o vídeo.");
+            }
+
+
+
 
         }
 
