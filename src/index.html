@@ -75,6 +75,12 @@
         padding: 10px;
         border-radius: 4px;
     }
+    .buttons{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+    }
 
     .sidebar .icons a:hover {
         background-color: #555;
@@ -128,10 +134,12 @@
             <h1>Area admin</h1>
             <label for="">Digite o nome do video</label>
             <input type="text" id="nome" required>
-            <label for="">Envie o video</label>
-            <input type="file" id="video" accept="video/*" required>
-            <label for="">Thumbnail do video</label>
-            <input type="file" id="thumb" accept="image/*" required>
+            <div class="buttons">
+                <label for="">Envie o video</label>
+                <input type="file" id="video" accept="video/*" required>
+                <label for="">Thumbnail do video</label>
+                <input type="file" id="thumb" accept="image/*" required>
+            </div>
             <label for="">Descricão do video</label>
             <input type="text" id="descricao" required>
             <button onclick="postarDados()">Enviar dados</button>
