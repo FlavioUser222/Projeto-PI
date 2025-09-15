@@ -107,40 +107,49 @@ app.delete('/video/:id', (req, res) => {
 
 
 app.put('/video/:id', upload.fields([
+  { name: 'video', maxCount: 1 },
   { name: 'thumbnail', maxCount: 1 }
 ]), (req, res) => {
   const { id } = req.params;
   const { nome, descricao } = req.body;
   const thumbnail = req.files['thumbnail'] ? req.files['thumbnail'][0] : null;
+  const video = req.files['video'] ? req.files['video'][0] : null;
 
-  // Primeiro, busca o vídeo atual para obter o nome da thumbnail antiga
-  db.get(`SELECT thumbnail FROM videos WHERE id = ?`, [id], (err, row) => {
+  db.get(`SELECT video, thumbnail FROM videos WHERE id = ?`, [id], (err, row) => {
     if (err || !row) {
       return res.status(404).json({ error: 'Vídeo não encontrado' });
     }
 
-    let novoThumbnail = row.thumbnail; // por padrão, mantém a thumbnail antiga
+    let novoThumbnail = row.thumbnail;
+    let novoVideo = row.video;
 
+    // Se for enviado novo thumbnail, deleta o antigo
     if (thumbnail) {
-      // Deleta a thumbnail antiga
-      const thumbPath = path.join(uploadsDir, row.thumbnail);
-      if (fs.existsSync(thumbPath)) fs.unlinkSync(thumbPath);
-
-      // Atualiza o nome da nova thumbnail
+      const oldThumbPath = path.join(uploadsDir, row.thumbnail);
+      if (fs.existsSync(oldThumbPath)) fs.unlinkSync(oldThumbPath);
       novoThumbnail = thumbnail.filename;
     }
 
-    // Atualiza os dados no banco
-    db.run(`UPDATE videos SET nome = ?, descricao = ?, thumbnail = ? WHERE id = ?`, [nome, descricao, novoThumbnail, id], function (err) {
-      if (err) {
-        return res.status(500).json({ error: 'Erro ao atualizar vídeo' });
-      }
+    // Se for enviado novo vídeo, deleta o antigo
+    if (video) {
+      const oldVideoPath = path.join(uploadsDir, row.video);
+      if (fs.existsSync(oldVideoPath)) fs.unlinkSync(oldVideoPath);
+      novoVideo = video.filename;
+    }
 
-      res.json({ message: 'Vídeo atualizado com sucesso' });
-    });
+    db.run(
+      `UPDATE videos SET nome = ?, descricao = ?, thumbnail = ?, video = ? WHERE id = ?`,
+      [nome, descricao, novoThumbnail, novoVideo, id],
+      function (err) {
+        if (err) {
+          return res.status(500).json({ error: 'Erro ao atualizar vídeo' });
+        }
+
+        res.json({ message: 'Vídeo atualizado com sucesso' });
+      }
+    );
   });
 });
-
 
 
 app.get('/cadastros', (req, res) => {

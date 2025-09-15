@@ -289,16 +289,24 @@
         }
 
         async function editarVideo(id) {
+           let nome = document.getElementById('nome').value
+            let video = document.getElementById('video')
+            let descricao = document.getElementById('descricao').value
+            const thumbFile = document.getElementById('thumb').files[0]
+            const videoFile = video.files[0]
+            const formData = new FormData()
 
-            let res = await fetch('', {
-                method: "PUT"
+            formData.append('nome', nome)
+            formData.append('descricao', descricao)
+            formData.append('video', videoFile)
+            formData.append('thumbnail', thumbFile)
+
+            let res = await fetch(`http://localhost:3000/video/${id}`, {
+                method: "PUT",
+                body:formData
             })
+
         }
-
-
-
-
-
 
 
         mostrarVideo();
