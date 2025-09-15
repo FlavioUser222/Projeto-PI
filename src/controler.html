@@ -91,20 +91,23 @@
 
             border-radius: 8px;
         }
-        .videoCard{
+
+        .videoCard {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 15px;
         }
-        button{
+
+        button {
             padding: 8px 12px;
             text-align: center;
             background-color: #555;
             color: #fff;
             border-radius: 10px;
         }
-        .divButtons{
+
+        .divButtons {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -161,6 +164,8 @@
     </div>
 
     <div class="container">
+
+
         <h1>Gerenciar Vídeos</h1>
         <div class="content" id="content">
             <div class="videosContent" id="videosContent">
@@ -168,6 +173,24 @@
             </div>
 
         </div>
+
+        <div class="modal" id="modal">
+            <div class="modal-content" id="modalContent">
+                <label for="">Digite o nome do video</label>
+                <input type="text" id="nome" required>
+                <label for="">Envie o video</label>
+                <input type="file" id="video" accept="video/*" required>
+                <label for="">Thumbnail do video</label>
+                <input type="file" id="thumb" accept="image/*" required>
+                <label for="">Descricão do video</label>
+                <input type="text" id="descricao" required>
+                <button onclick="">Editar video</button>
+            </div>
+        </div>
+
+
+
+
     </div>
     <script>
 
@@ -219,14 +242,14 @@
 
 
         async function excluirVideo(id) {
-            let res = await fetch(`http://localhost:3000/video/${id}`,{
-                method:"DELETE"
+            let res = await fetch(`http://localhost:3000/video/${id}`, {
+                method: "DELETE"
             })
         }
 
         async function editarVideo(id) {
-            let res = await fetch('',{
-                method:"PUT"
+            let res = await fetch('', {
+                method: "PUT"
             })
         }
 
