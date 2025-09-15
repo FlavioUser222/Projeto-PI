@@ -126,7 +126,7 @@
 
         .modal-content {
             background: white;
-            padding: 20px;
+            padding: 50px;
             border-radius: 10px;
             width: 90%;
             max-width: 500px;
@@ -217,13 +217,13 @@
 
         <div class="modal" id="modal">
             <div class="modal-content" id="modalContent">
-                <label for="">Digite o nome do video</label>
+                <label for="">Digite o novo nome do video</label>
                 <input type="text" id="nome" required>
-                <label for="">Envie o video</label>
+                <label for="">Envie o video novo</label>
                 <input type="file" id="video" accept="video/*" required>
-                <label for="">Thumbnail do video</label>
+                <label for="">Thumbnail nova do video</label>
                 <input type="file" id="thumb" accept="image/*" required>
-                <label for="">Descricão do video</label>
+                <label for="">Nova descricão do video</label>
                 <input type="text" id="descricao" required>
                 <button id="botaoEditar">Editar video</button>
             </div>
@@ -335,6 +335,17 @@
 
 
         mostrarVideo();
+
+
+        // Fecha o modal ao clicar fora da modal-content
+        document.getElementById('modal').addEventListener('click', function (event) {
+            // Se o clique for diretamente no fundo (não no conteúdo)
+            if (event.target === this) {
+                this.classList.remove('show');
+            }
+        });
+
+
     </script>
 </body>
 
