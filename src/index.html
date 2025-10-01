@@ -28,7 +28,17 @@
         max-width: 900px;
         gap: 10px;
     }
+    input{
+        padding: 8px 12px;
+    }
 
+    .buttonEnviar{
+        padding: 8px 12px;
+        color: white;
+        background-color: #555;
+        border-radius: 4px;
+        cursor: pointer;
+}
 
     .sidebar {
         width: 180px;
@@ -135,7 +145,7 @@
         <div class="content" id="content">
             <h1>Area admin</h1>
             <label for="">Digite o nome do video</label>
-            <input type="text" id="nome" required>
+            <input type="text" id="nome" placeholder="Digite o nome do video"  required>
             <div class="buttons">
                 <label for="">Envie o video</label>
                 <input type="file" id="video" accept="video/*" required>
@@ -143,8 +153,8 @@
                 <input type="file" id="thumb" accept="image/*" required>
             </div>
             <label for="">Descricão do video</label>
-            <input type="text" id="descricao" required>
-            <button onclick="postarDados()">Enviar dados</button>
+            <input type="text" id="descricao" placeholder="Digite a descrição do video" required>
+            <button onclick="postarDados()" class="buttonEnviar">Enviar dados</button>
         </div>
     </div>
 
