@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Inclusive.com</title>
 </head>
 
 <body>
@@ -41,18 +41,24 @@
                 videos.forEach((video) => {
                     let videoElement = document.createElement('video');
                     let videoCard = document.createElement('div');
-                    
+                    let titulo = document.createElement('p')
+
+    
                     videoCard.className = "videoCard";
 
                     videoElement.src = `http://localhost:3000/uploads/${video.video}`;
                     videoElement.controls = true;
                     videoElement.preload = 'metadata';
-                    videoElement.width = 400;
+                    videoElement.width = 500;
                     videoElement.height = 225;
                     videoElement.poster = `http://localhost:3000/uploads/${video.thumbnail}`;
                     videoElement.style.borderRadius = '8px';
 
+                    titulo.innerText = video.nome
+                    
+
                     videoCard.appendChild(videoElement);
+                    videoCard.appendChild(titulo)
                     videosContent.appendChild(videoCard);
                 })
 
