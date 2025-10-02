@@ -7,7 +7,7 @@
     <title>Inclusive.com</title>
 </head>
 
-<style>
+<!-- <style>
     *{
         padding: 0;
         margin: 0;
@@ -46,6 +46,132 @@
 
 
 
+</style> -->
+
+
+
+    <style>* {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+
+    body {
+        background: #fff;
+        color: #333;
+    }
+
+    header {
+        background: #e60000;
+        /* vermelho */
+        padding: 12px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+   
+
+    }
+
+    header img {
+        height: 40px;
+    }
+
+    .input-Img {
+        display: flex;
+        align-items: center;
+        background: #fff;
+        border-radius: 20px;
+        padding: 5px 10px;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .input-Img input {
+        border: none;
+        outline: none;
+        flex: 1;
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .input-Img img {
+        height: 20px;
+        margin-left: 8px;
+    }
+
+    .container {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .titulo1 {
+        margin: 30px 0 15px;
+        text-align: center;
+        font-size: 1.4rem;
+    }
+
+    #select {
+        margin-bottom: 25px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+    }
+
+    .content-videos {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        width: 100%;
+        
+        cursor: pointer;
+    }
+
+    .videoCard {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s;
+    }
+
+    .videoCard:hover {
+        transform: scale(1.03);
+    }
+
+    .videoCard p {
+        margin-top: 10px;
+        font-size: 14px;
+        text-align: center;
+    }
+
+    video {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+    }
+
+
+    @media (max-width: 768px) {
+        header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .input-Img {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .titulo1 {
+            font-size: 1.2rem;
+        }
+    }
 </style>
 
 
@@ -62,7 +188,7 @@
     <div class="container">
         <div class="content">
             <h1 class="titulo1">Conheça nossos cursos</h1>
-            <select name="" id="">
+            <select name="" id="select">
                 <option selected disabled>Filtrar por:</option>
 
             </select>
@@ -86,7 +212,7 @@
                     let videoCard = document.createElement('div');
                     let titulo = document.createElement('p')
 
-    
+
                     videoCard.className = "videoCard";
 
                     videoElement.src = `http://localhost:3000/uploads/${video.video}`;
@@ -98,7 +224,7 @@
                     videoElement.style.borderRadius = '8px';
 
                     titulo.innerText = video.nome
-                    
+
 
                     videoCard.appendChild(videoElement);
                     videoCard.appendChild(titulo)
