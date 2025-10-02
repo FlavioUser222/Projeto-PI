@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <header>
         <img src="" alt="">
@@ -20,11 +21,46 @@
             <h1>Conheça nossos cursos</h1>
             <select name="Filtrar por:" id=""></select>
             <div class="content-videos">
-                
+
 
             </div>
         </div>
     </div>
+
+
+    <script>
+        async function mostrarVideo() {
+            try {
+                let res = await fetch('http://localhost:3000/videos');
+                let videos = await res.json();
+                let videosContent = document.getElementById('content-videos');
+
+                videos.forEach((video) => {
+                    let videoElement = document.createElement('video');
+                    let videoCard = document.createElement('div');
+                    videoCard.className = "videoCard";
+
+                    videoElement.src = `http://localhost:3000/uploads/${video.video}`;
+                    videoElement.controls = true;
+                    videoElement.preload = 'metadata';
+                    videoElement.width = 400;
+                    videoElement.height = 225;
+                    videoElement.poster = `http://localhost:3000/uploads/${video.thumbnail}`;
+                    videoElement.style.borderRadius = '8px';
+
+                    videoCard.appendChild(videoElement);
+                    videosContent.appendChild(videoCard);
+                })
+
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        mostrarVideo()
+
+    </script>
+
 
 
 
