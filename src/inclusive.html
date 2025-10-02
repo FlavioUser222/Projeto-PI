@@ -20,7 +20,7 @@
         <div class="content">
             <h1>Conheça nossos cursos</h1>
             <select name="Filtrar por:" id=""></select>
-            <div class="content-videos">
+            <div class="content-videos" id="content-videos">
 
 
             </div>
@@ -38,6 +38,7 @@
                 videos.forEach((video) => {
                     let videoElement = document.createElement('video');
                     let videoCard = document.createElement('div');
+                    
                     videoCard.className = "videoCard";
 
                     videoElement.src = `http://localhost:3000/uploads/${video.video}`;
