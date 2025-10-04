@@ -5,234 +5,126 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inclusive.com</title>
-</head>
-
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: Arial, sans-serif;
-    }
-
-    body {
-        background: #fff;
-        color: #333;
-    }
-
-    img {
-        width: 100%;
-    }
-
-    header {
-        background: #e60000;
-        /* vermelho */
-        padding: 12px 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-
-    }
-
-    header img {
-        height: 40px;
-    }
-
-    .input-Img {
-        display: flex;
-        align-items: center;
-        background: #fff;
-        border-radius: 20px;
-        padding: 5px 10px;
-        width: 100%;
-        max-width: 400px;
-    }
-
-    .input-Img input {
-        border: none;
-        outline: none;
-        flex: 1;
-        padding: 8px;
-        font-size: 14px;
-    }
-
-    .input-Img img {
-        height: 20px;
-        margin-left: 8px;
-    }
-
-    .container {
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .titulo1 {
-        margin: 30px 0 15px;
-        text-align: center;
-        font-size: 1.4rem;
-    }
-
-    #select {
-        margin-bottom: 25px;
-        padding: 8px 12px;
-        border-radius: 8px;
-        border: 1px solid #ccc;
-        font-size: 14px;
-    }
-
-    .content {
-        max-width: 1000px;
-        width: 100%;
-    }
-
-    .content-videos {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 20px;
-        width: 100%;
-        cursor: pointer;
-    }
-
-    .videoCard {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        transition: transform 0.2s;
-    }
-
-    .videoCard:hover {
-        transform: scale(1.03);
-    }
-
-    .videoCard p {
-        margin-top: 10px;
-        font-size: 14px;
-        text-align: center;
-    }
-
-    video {
-        width: 100%;
-        height: auto;
-        border-radius: 8px;
-    }
-
-
-    @media (max-width: 768px) {
-        header {
-            flex-direction: column;
-            align-items: flex-start;
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
         }
 
-        .input-Img {
-            width: 100%;
-            margin-top: 10px;
+        body {
+            background: #fff;
+        }
+        
+        header {
+            background: #e60000;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .titulo1 {
-            font-size: 1.2rem;
+            margin: 30px 0 15px;
+            text-align: center;
+            font-size: 1.4rem;
         }
-    }
 
-    .options-acessibilidade {
-        display: none;
-    }
+        .options-acessibilidade {
+            display: none;
+            flex-direction: column;
+            position: fixed;
+            bottom: 130px;
+            right: 40px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            gap: 10px;
+            z-index: 9999;
+            width: 180px;
+        }
 
-    a>img {
-        width: 70px;
-        height: 70px;
-        position: fixed;
-        right: 40px;
-        bottom: 50px;
+        .options-acessibilidade a {
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            padding: 6px 0;
+            transition: 0.2s;
+        }
 
-    }
-</style>
+        .options-acessibilidade a:hover {
+            color: #e60000;
+            font-weight: bold;
+        }
 
-
+        .acessibilidade img {
+            width: 70px;
+            height: 70px;
+            position: fixed;
+            right: 40px;
+            bottom: 50px;
+            cursor: pointer;
+            z-index: 10000;
+        }
+    </style>
+</head>
 
 <body>
     <header>
-        <img src="" alt="">
         <div class="input-Img">
             <input type="text" placeholder="Pesquisar curso">
-            <img src="" alt="">
         </div>
     </header>
 
     <div class="container">
 
-        <div class="acessibilidade">
-            <a href=""><img src="../imagens/acessibilidade.png" alt=""></a>
-            <div class="options-acessibilidade">
-                <a href=""><img src="" alt="">Alto contraste</a>
-                <a href=""><img src="" alt="">Aumentar a fonte</a>
-                <a href=""><img src="" alt="">Diminuir a fonte</a>
+        <div class="acessibilidade" id="divAcessibilidade">
+            <img src="../imagens/acessibilidade.png" alt="Acessibilidade">
+            <div class="options-acessibilidade" id="optionsAcessibilidade">
+                <a href="#"><img src="" alt="">Alto contraste</a>
+                <a href="#"><img src="" alt="">Aumentar fonte</a>
+                <a href="#"><img src="" alt="">Diminuir fonte</a>
             </div>
         </div>
-
 
         <div class="content">
             <h1 class="titulo1">Conheça nossos cursos</h1>
-            <select name="" id="select">
+            <select id="select">
                 <option selected disabled>Filtrar por:</option>
-
             </select>
-            <div class="content-videos" id="content-videos">
-
-
-            </div>
+            <div class="content-videos" id="content-videos"></div>
         </div>
     </div>
 
-
     <script>
-        async function mostrarVideo() {
-            try {
-                let res = await fetch('http://localhost:3000/videos');
-                let videos = await res.json();
-                let videosContent = document.getElementById('content-videos');
-
-                videos.forEach((video) => {
-                    let videoElement = document.createElement('video');
-                    let videoCard = document.createElement('div');
-                    let titulo = document.createElement('p')
-
-
-                    videoCard.className = "videoCard";
-
-                    videoElement.src = `http://localhost:3000/uploads/${video.video}`;
-                    videoElement.controls = true;
-                    videoElement.preload = 'metadata';
-                    videoElement.width = 400;
-                    videoElement.height = 225;
-                    videoElement.poster = `http://localhost:3000/uploads/${video.thumbnail}`;
-                    videoElement.style.borderRadius = '8px';
-
-                    titulo.innerText = video.nome
-
-
-                    videoCard.appendChild(videoElement);
-                    videoCard.appendChild(titulo)
-                    videosContent.appendChild(videoCard);
-                })
-
-            } catch (error) {
-                console.error(error);
-            }
+        function clickAcessibilidade(event) {
+            event.stopPropagation();
+            const options = document.getElementById('optionsAcessibilidade');
+            const isVisible = options.style.display === 'flex';
+            options.style.display = isVisible ? 'none' : 'flex';
         }
 
-        mostrarVideo()
+        
+        document.addEventListener('click', (event) => {
+            const options = document.getElementById('optionsAcessibilidade');
+            const acessDiv = document.getElementById('divAcessibilidade');
+            if (!acessDiv.contains(event.target)) {
+                options.style.display = 'none';
+            }
+        });
 
+        document.getElementById('divAcessibilidade').addEventListener('click', clickAcessibilidade);
     </script>
-
-
-
-
 </body>
 
 </html>
