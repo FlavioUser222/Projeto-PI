@@ -3,27 +3,18 @@ import cors from 'cors'
 import multer from 'multer'
 import path from 'path'
 import fs from 'fs'
-import sqlite3 from 'sqlite3'
+import 'dotenv/config'
 
-const db = new sqlite3.Database('db.sqlite3')
-
-db.serialize(() => {
-  db.run(`CREATE TABLE IF NOT EXISTS videos(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nome varchar(100) NOT NULL,
-        video TEXT NOT NULL,
-        descricao TEXT NOT NULL,
-        thumbnail TEXT NOT NULL
-    )`)
-  db.run(`CREATE TABLE IF NOT EXISTS cadastros(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nome varchar(100) NOT NULL,
-        senha varchar(100) NOT NULL
-    )`)
-})
+import pkg from 'pg'
+const { Pool } = pkg
 
 
-// Verifica se a pasta 'uploads' existe, caso contrário cria
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
+});
+
+
 const uploadsDir = 'uploads/'
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir)
@@ -32,6 +23,8 @@ if (!fs.existsSync(uploadsDir)) {
 const app = express()
 app.use(cors())
 app.use('/uploads', express.static('uploads'))
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
 
 
 // Configuração do multer para salvar arquivos na pasta 'uploads'
@@ -50,125 +43,130 @@ const storage = multer.diskStorage({
 const upload = multer({ storage })
 
 
-app.use(express.json())
-
-
-app.get('/videos', (req, res) => {
-  db.all(`SELECT * FROM videos`, [], (err, rows) => {
-    res.json(rows)
-  })
-
-})
+app.get('/videos', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM videos ORDER BY id DESC');
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 app.post('/video', upload.fields([
   { name: 'video', maxCount: 1 },
   { name: 'thumbnail', maxCount: 1 }
-]), (req, res) => {
-  const { nome, descricao } = req.body
-  const video = req.files['video'] ? req.files['video'][0] : null
-  const thumbnail = req.files['thumbnail'] ? req.files['thumbnail'][0] : null
+]), async (req, res) => {
+  try {
+    console.log('REQ.BODY:', req.body);
+    console.log('REQ.FILES:', req.files);
 
-  if (!video || !thumbnail) {
-    return res.status(400).send('Arquivo de vídeo não enviado')
+    const { nome, descricao } = req.body;
+    const video = req.files['video']?.[0];
+    const thumbnail = req.files['thumbnail']?.[0];
+
+    if (!nome || !descricao || !video || !thumbnail) {
+      return res.status(400).json({ error: 'Campos obrigatórios ausentes!' });
+    }
+
+    await pool.query(
+      `INSERT INTO videos (nome, descricao, video, thumbnail) VALUES ($1, $2, $3, $4)`,
+      [nome, descricao, video.filename, thumbnail.filename]
+    );
+
+    res.json({ message: '🎬 Vídeo salvo com sucesso!' });
+  } catch (err) {
+    console.error(err); // imprime o erro completo
+    res.status(500).json({ error: err.message });
   }
-
-  db.run(`INSERT INTO videos(nome,descricao,video,thumbnail) VALUES (?,?,?,?)`, [nome, descricao, video.filename, thumbnail.filename])
-
-  res.send('Video salvo com sucesso')
 })
 
 
-app.delete('/video/:id', (req, res) => {
-  const { id } = req.params;
 
-  db.get(`SELECT video, thumbnail FROM videos WHERE id = ?`, [id], (err, row) => {
-    if (err || !row) {
-      return res.status(404).json({ error: 'Vídeo não encontrado' });
-    }
+app.delete('/video/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { rows } = await pool.query('SELECT video, thumbnail FROM videos WHERE id = $1', [id]);
 
-    // Deleta os arquivos do sistema de arquivos
-    const videoPath = path.join(uploadsDir, row.video);
-    const thumbPath = path.join(uploadsDir, row.thumbnail);
+    if (rows.length === 0) return res.status(404).json({ error: 'Vídeo não encontrado' });
+
+    const video = rows[0];
+    const videoPath = path.join(uploadsDir, video.video);
+    const thumbPath = path.join(uploadsDir, video.thumbnail);
 
     if (fs.existsSync(videoPath)) fs.unlinkSync(videoPath);
     if (fs.existsSync(thumbPath)) fs.unlinkSync(thumbPath);
 
-    // Agora remove do banco
-    db.run(`DELETE FROM videos WHERE id = ?`, [id], (err) => {
-      if (err) {
-        return res.status(500).json({ error: 'Erro ao deletar vídeo do banco' });
+    await pool.query('DELETE FROM videos WHERE id = $1', [id]);
+
+    res.status(204).send();
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.put(
+  '/video/:id',
+  upload.fields([
+    { name: 'video', maxCount: 1 },
+    { name: 'thumbnail', maxCount: 1 }
+  ]),
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { nome, descricao } = req.body;
+      const video = req.files['video']?.[0];
+      const thumbnail = req.files['thumbnail']?.[0];
+
+      const { rows } = await pool.query('SELECT video, thumbnail FROM videos WHERE id = $1', [id]);
+      if (rows.length === 0) return res.status(404).json({ error: 'Vídeo não encontrado' });
+
+      let novoVideo = rows[0].video
+      let novoThumbnail = rows[0].thumbnail
+
+      if (video) {
+        const oldPath = path.join(uploadsDir, novoVideo);
+        if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
+        novoVideo = video.filename;
       }
 
-      return res.status(204).send(); // Sucesso, sem conteúdo
-    });
-  });
+      if (thumbnail) {
+        const oldThumb = path.join(uploadsDir, novoThumbnail);
+        if (fs.existsSync(oldThumb)) fs.unlinkSync(oldThumb);
+        novoThumbnail = thumbnail.filename;
+      }
+
+      await pool.query(
+        `UPDATE videos SET nome = $1, descricao = $2, video = $3, thumbnail = $4 WHERE id = $5`,
+        [nome, descricao, novoVideo, novoThumbnail, id]
+      );
+
+      res.json({ message: '✅ Vídeo atualizado com sucesso' });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  }
+);
+
+// Listar cadastros
+app.get('/cadastros', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM cadastros');
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 
-
-app.put('/video/:id', upload.fields([
-  { name: 'video', maxCount: 1 },
-  { name: 'thumbnail', maxCount: 1 }
-]), (req, res) => {
-  const { id } = req.params;
-  const { nome, descricao } = req.body;
-  const thumbnail = req.files['thumbnail'] ? req.files['thumbnail'][0] : null;
-  const video = req.files['video'] ? req.files['video'][0] : null;
-
-  db.get(`SELECT video, thumbnail FROM videos WHERE id = ?`, [id], (err, row) => {
-    if (err || !row) {
-      return res.status(404).json({ error: 'Vídeo não encontrado' });
-    }
-
-    let novoThumbnail = row.thumbnail;
-    let novoVideo = row.video;
-
-    // Se for enviado novo thumbnail, deleta o antigo
-    if (thumbnail) {
-      const oldThumbPath = path.join(uploadsDir, row.thumbnail);
-      if (fs.existsSync(oldThumbPath)) fs.unlinkSync(oldThumbPath);
-      novoThumbnail = thumbnail.filename;
-    }
-
-    // Se for enviado novo vídeo, deleta o antigo
-    if (video) {
-      const oldVideoPath = path.join(uploadsDir, row.video);
-      if (fs.existsSync(oldVideoPath)) fs.unlinkSync(oldVideoPath);
-      novoVideo = video.filename;
-    }
-
-    db.run(
-      `UPDATE videos SET nome = ?, descricao = ?, thumbnail = ?, video = ? WHERE id = ?`,
-      [nome, descricao, novoThumbnail, novoVideo, id],
-      function (err) {
-        if (err) {
-          return res.status(500).json({ error: 'Erro ao atualizar vídeo' });
-        }
-
-        res.json({ message: 'Vídeo atualizado com sucesso' });
-      }
-    );
-  });
+app.post('/cadastro', async (req, res) => {
+  try {
+    const { user, senha } = req.body;
+    await pool.query('INSERT INTO cadastros (nome, senha) VALUES ($1, $2)', [user, senha]);
+    res.send('🧍 Cadastro criado com sucesso!');
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
-
-
-app.get('/cadastros', (req, res) => {
-  db.all(`SELECT * FROM cadastros`, [], (err, rows) => {
-    res.json(rows)
-  })
-
-})
-
-app.post('/cadastro', (req, res) => {
-  const { user, senha } = req.body
-
-  db.run(`INSERT INTO cadastros(nome,senha) VALUES (?,?)`, [user, senha])
-
-  res.send('Dados salvos com sucesso')
-  console.log('Dados salvos:', user)
-
-})
-
 
 app.listen(3000, () => {
   console.log('Servidor rodando na porta 3000')
