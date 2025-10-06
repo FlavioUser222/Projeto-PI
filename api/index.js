@@ -60,7 +60,7 @@ app.post('/video', upload.fields([
     console.log('REQ.BODY:', req.body);
     console.log('REQ.FILES:', req.files);
 
-    const { nome, descricao } = req.body;
+    const { nome, descricao, legenda, transcricao } = req.body
     const video = req.files['video']?.[0]
     const thumbnail = req.files['thumbnail']?.[0]
 
@@ -69,8 +69,8 @@ app.post('/video', upload.fields([
     }
 
     await pool.query(
-      `INSERT INTO videos (nome, descricao, video, thumbnail) VALUES ($1, $2, $3, $4)`,
-      [nome, descricao, video.filename, thumbnail.filename]
+      `INSERT INTO videos (nome, descricao, video, thumbnail,legenda,transcricao) VALUES ($1, $2, $3, $4,$5,$6)`,
+      [nome, descricao, video.filename, thumbnail.filename, legenda, transcricao]
     );
 
     res.json({ message: '🎬 Vídeo salvo com sucesso!' });

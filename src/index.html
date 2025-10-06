@@ -28,17 +28,18 @@
         max-width: 900px;
         gap: 10px;
     }
-    input{
+
+    input {
         padding: 8px 12px;
     }
 
-    .buttonEnviar{
+    .buttonEnviar {
         padding: 8px 12px;
         color: white;
         background-color: #555;
         border-radius: 4px;
         cursor: pointer;
-}
+    }
 
     .sidebar {
         width: 180px;
@@ -85,7 +86,8 @@
         padding: 10px;
         border-radius: 4px;
     }
-    .buttons{
+
+    .buttons {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -108,7 +110,8 @@
         .sidebar .menu-toggle {
             display: block;
         }
-        .icons{
+
+        .icons {
             margin-top: 50px;
         }
 
@@ -145,7 +148,7 @@
         <div class="content" id="content">
             <h1>Area admin</h1>
             <label for="">Digite o nome do video</label>
-            <input type="text" id="nome" placeholder="Digite o nome do video"  required>
+            <input type="text" id="nome" placeholder="Digite o nome do video" required>
             <div class="buttons">
                 <label for="">Envie o video</label>
                 <input type="file" id="video" accept="video/*" required>
@@ -154,6 +157,13 @@
             </div>
             <label for="">Descricão do video</label>
             <input type="text" id="descricao" placeholder="Digite a descrição do video" required>
+            <label for="">Legenda do vídeo</label>
+            <input type="text" id="legenda" placeholder="Digite a legenda">
+            <label for="">Transcrição do vídeo</label>
+            <textarea id="transcricao" placeholder="Digite a transcrição"></textarea>
+
+
+
             <button onclick="postarDados()" class="buttonEnviar">Enviar dados</button>
         </div>
     </div>
@@ -174,11 +184,16 @@
             const thumbFile = document.getElementById('thumb').files[0]
             const videoFile = video.files[0]
             const formData = new FormData()
+            const legenda = document.getElementById('legenda').value;
+            const transcricao = document.getElementById('transcricao').value
+
 
             formData.append('nome', nome)
             formData.append('descricao', descricao)
             formData.append('video', videoFile)
             formData.append('thumbnail', thumbFile)
+            formData.append('legenda', legenda);
+            formData.append('transcricao', transcricao);
 
 
             let res = await fetch('http://localhost:3000/video', {
