@@ -28,8 +28,6 @@
         display: flex;
         align-items: center;
         justify-content: center;
-
-
     }
 
     header img {
@@ -119,18 +117,69 @@
         border-radius: 8px;
     }
 
-
-    .options-acessibilidade {
-        display: none;
-    }
-
-    a>img {
-        width: 70px;
-        height: 70px;
+    .acessibilidade {
         position: fixed;
         right: 40px;
         bottom: 50px;
+        z-index: 100;
     }
+
+    .acessibilidade a>img {
+        width: 70px;
+        height: 70px;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+
+    .acessibilidade a>img:hover {
+        transform: scale(1.1);
+    }
+
+    .options-acessibilidade {
+        display: none;
+        position: absolute;
+        bottom: 80px;
+        /* sobe o balão acima do ícone */
+        right: 0;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        padding: 10px;
+        flex-direction: column;
+        gap: 8px;
+        width: 180px;
+        text-align: left;
+        animation: fadeIn 0.2s ease-in-out;
+    }
+
+    .options-acessibilidade::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        right: 20px;
+        border-width: 10px;
+        border-style: solid;
+        border-color: #fff transparent transparent transparent;
+    }
+
+    .options-acessibilidade a {
+        color: #333;
+        text-decoration: none;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 8px;
+        border-radius: 6px;
+        transition: background 0.2s;
+    }
+
+    .options-acessibilidade a:hover {
+        background: #f2f2f2;
+    }
+
+
+
 
 
 
@@ -164,8 +213,8 @@
 
     <div class="container">
 
-        <div class="acessibilidade" onclick="clickAcessibilidade()">
-            <a href=""><img src="../imagens/acessibilidade.png" alt=""></a>
+        <div class="acessibilidade">
+            <a href="javascript:void(0)" onclick="clickAcessibilidade()"><img src="../imagens/acessibilidade.png" alt=""></a>
             <div class="options-acessibilidade" id="optionsAcessibilidade">
                 <a href=""><img src="" alt="">Alto contraste</a>
                 <a href=""><img src="" alt="">Aumentar a fonte</a>
@@ -225,10 +274,10 @@
         }
 
         function clickAcessibilidade() {
-            let optionsAcessibilidade = document.getElementById('optionsAcessibilidade')
-            optionsAcessibilidade.style.display = 'flex'
-            optionsAcessibilidade.style.padding = '30px'
-            optionsAcessibilidade.style.backgroundColor = 'red'
+            const options = document.getElementById("optionsAcessibilidade");
+            const isVisible = options.style.display === "flex";
+
+            options.style.display = isVisible ? "none" : "flex";
         }
 
 
