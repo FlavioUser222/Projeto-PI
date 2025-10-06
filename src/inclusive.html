@@ -178,11 +178,6 @@
         background: #f2f2f2;
     }
 
-
-
-
-
-
     @media (max-width: 768px) {
         header {
             flex-direction: column;
@@ -206,7 +201,7 @@
     <header>
         <img src="" alt="">
         <div class="input-Img">
-            <input type="text" placeholder="Pesquisar curso">
+            <input type="text" placeholder="Pesquisar curso" id="pesquisarCurso">
             <img src="" alt="">
         </div>
     </header>
@@ -214,7 +209,8 @@
     <div class="container">
 
         <div class="acessibilidade">
-            <a href="javascript:void(0)" onclick="clickAcessibilidade()"><img src="../imagens/acessibilidade.png" alt=""></a>
+            <a href="javascript:void(0)" onclick="clickAcessibilidade()"><img src="../imagens/acessibilidade.png"
+                    alt=""></a>
             <div class="options-acessibilidade" id="optionsAcessibilidade">
                 <a href=""><img src="" alt="">Alto contraste</a>
                 <a href=""><img src="" alt="">Aumentar a fonte</a>
@@ -230,62 +226,69 @@
 
             </select>
             <div class="content-videos" id="content-videos">
-
-
             </div>
         </div>
     </div>
 
 
     <script>
+        let todosVideos = [] // variável global para guardar todos os vídeos
+
         async function mostrarVideo() {
             try {
                 let res = await fetch('http://localhost:3000/videos');
-                let videos = await res.json();
-                let videosContent = document.getElementById('content-videos');
-
-                videos.forEach((video) => {
-                    let videoElement = document.createElement('video');
-                    let videoCard = document.createElement('div');
-                    let titulo = document.createElement('p')
-
-
-                    videoCard.className = "videoCard";
-
-                    videoElement.src = `http://localhost:3000/uploads/${video.video}`
-                    videoElement.controls = true;
-                    videoElement.preload = 'metadata';
-                    videoElement.width = 400;
-                    videoElement.height = 225;
-                    videoElement.poster = `http://localhost:3000/uploads/${video.thumbnail}`
-                    videoElement.style.borderRadius = '8px';
-
-                    titulo.innerText = video.nome
-
-
-                    videoCard.appendChild(videoElement);
-                    videoCard.appendChild(titulo)
-                    videosContent.appendChild(videoCard);
-                })
-
+                todosVideos = await res.json(); // salva todos os vídeos
+                exibirVideos(todosVideos) // exibe todos inicialmente
             } catch (error) {
                 console.error(error);
             }
         }
 
+        function exibirVideos(lista) {
+            const videosContent = document.getElementById('content-videos');
+            videosContent.innerHTML = ''; // limpa antes de renderizar novamente
+
+            lista.forEach((video) => {
+                let videoElement = document.createElement('video');
+                let videoCard = document.createElement('div');
+                let titulo = document.createElement('p');
+
+                videoCard.className = "videoCard";
+                videoElement.src = `http://localhost:3000/uploads/${video.video}`;
+                videoElement.controls = true;
+                videoElement.preload = 'metadata';
+                videoElement.poster = `http://localhost:3000/uploads/${video.thumbnail}`;
+                videoElement.style.borderRadius = '8px';
+
+                titulo.innerText = video.nome;
+
+                videoCard.appendChild(videoElement);
+                videoCard.appendChild(titulo);
+                videosContent.appendChild(videoCard);
+            });
+        }
+
+        function filtrarVideos() {
+            const termo = document.getElementById('pesquisarCurso').value.toLowerCase();
+
+            const filtrados = todosVideos.filter(video =>
+                video.nome.toLowerCase().includes(termo)
+            );
+
+            exibirVideos(filtrados);
+        }
+
         function clickAcessibilidade() {
             const options = document.getElementById("optionsAcessibilidade");
             const isVisible = options.style.display === "flex";
-
             options.style.display = isVisible ? "none" : "flex";
         }
 
-
-
-        mostrarVideo()
-
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('pesquisarCurso').addEventListener('input', filtrarVideos);
+            mostrarVideo(); // carrega os vídeos ao iniciar
+        });
     </script>
-
 
 
 
