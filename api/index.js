@@ -61,8 +61,8 @@ app.post('/video', upload.fields([
     console.log('REQ.FILES:', req.files);
 
     const { nome, descricao } = req.body;
-    const video = req.files['video']?.[0];
-    const thumbnail = req.files['thumbnail']?.[0];
+    const video = req.files['video']?.[0]
+    const thumbnail = req.files['thumbnail']?.[0]
 
     if (!nome || !descricao || !video || !thumbnail) {
       return res.status(400).json({ error: 'Campos obrigatórios ausentes!' });
@@ -147,7 +147,6 @@ app.put(
   }
 );
 
-// Listar cadastros
 app.get('/cadastros', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM cadastros');
@@ -156,7 +155,6 @@ app.get('/cadastros', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
 
 app.post('/cadastro', async (req, res) => {
   try {
