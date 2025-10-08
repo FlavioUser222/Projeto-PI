@@ -60,7 +60,7 @@ app.post('/video', upload.fields([
     console.log('REQ.BODY:', req.body);
     console.log('REQ.FILES:', req.files);
 
-    const { nome, descricao, legenda, transcricao } = req.body
+    const { nome, descricao, legenda, transcricao, categoria_id } = req.body
     const video = req.files['video']?.[0]
     const thumbnail = req.files['thumbnail']?.[0]
 
@@ -69,8 +69,8 @@ app.post('/video', upload.fields([
     }
 
     await pool.query(
-      `INSERT INTO videos (nome, descricao, video, thumbnail,legenda,transcricao) VALUES ($1, $2, $3, $4,$5,$6)`,
-      [nome, descricao, video.filename, thumbnail.filename, legenda, transcricao]
+      `INSERT INTO videos (nome, descricao, video, thumbnail,legenda,transcricao,categoria_id) VALUES ($1, $2, $3, $4,$5,$6,$7)`,
+      [nome, descricao, video.filename, thumbnail.filename, legenda, transcricao, categoria_id]
     );
 
     res.json({ message: '🎬 Vídeo salvo com sucesso!' });
@@ -165,6 +165,63 @@ app.post('/cadastro', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+app.get('/favoritos', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM favoritos');
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/favorito', async (req, res) => {
+  try {
+    const { user_id, video_id } = req.body;
+    await pool.query('INSERT INTO favoritos (user_id, video_id) VALUES ($1, $2)', [user_id, video_id]);
+    res.send('Favorito adicionado com sucesso!')
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+});
+
+app.get('/categorias', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM categorias');
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/categoria', async (req, res) => {
+  try {
+    const { nome } = req.body;
+    await pool.query('INSERT INTO categorias (nome) VALUES ($1)', [nome]);
+    res.send('Categoria criado com sucesso!')
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
+app.get('/avaliacoes', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM avaliacoes');
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/avaliacao', async (req, res) => {
+  try {
+    const { video_id, user_id, nota } = req.body
+    await pool.query('INSERT INTO avaliacoes (video_id,user_id,nota) VALUES ($1,$2,$3)', [video_id, user_id, nota]);
+    res.send('Avaliaçao enviada com sucesso!')
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
 
 app.listen(3000, () => {
   console.log('Servidor rodando na porta 3000')
