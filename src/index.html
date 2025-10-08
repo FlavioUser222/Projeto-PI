@@ -196,7 +196,7 @@
             formData.append('transcricao', transcricao);
 
 
-            let res = await fetch('http://localhost:3000/video', {
+            let res = await fetch('https://projeto-pi-onrender.onrender.com/video', {
                 method: "POST",
                 body: formData
             })
