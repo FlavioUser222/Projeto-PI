@@ -236,6 +236,9 @@
                 <input type="text" id="legenda" placeholder="Digite a legenda">
                 <label for="">Transcrição do vídeo</label>
                 <textarea id="transcricao" placeholder="Digite a transcrição"></textarea>
+
+
+
                 <button id="botaoEditar">Editar video</button>
 
 
@@ -261,7 +264,7 @@
 
         async function mostrarVideo() {
             try {
-                let res = await fetch('http://localhost:3000/videos');
+                let res = await fetch('https://projeto-pi-onrender.onrender.com/videos');
                 let videos = await res.json();
                 let videosContent = document.getElementById('videosContent');
 
@@ -272,12 +275,12 @@
                     videoCard.className = "videoCard"
 
                     // Define os atributos do vídeo
-                    videoElement.src = `http://localhost:3000/uploads/${video.video}`;
+                    videoElement.src = `https://projeto-pi-onrender.onrender.com/uploads/${video.video}`;
                     videoElement.controls = true;
                     videoElement.preload = 'metadata';
                     videoElement.width = 400;
                     videoElement.height = 225;
-                    videoElement.poster = `http://localhost:3000/uploads/${video.thumbnail}`;
+                    videoElement.poster = `https://projeto-pi-onrender.onrender.com/uploads/${video.thumbnail}`;
                     videoElement.style.borderRadius = '8px';
 
 
@@ -299,7 +302,7 @@
 
 
         async function excluirVideo(id) {
-            let res = await fetch(`http://localhost:3000/video/${id}`, {
+            let res = await fetch(`https://projeto-pi-onrender.onrender.com/video/${id}`, {
                 method: "DELETE"
             })
         }
@@ -328,7 +331,7 @@
             formData.append('video', videoFile)
             formData.append('thumbnail', thumbFile)
 
-            let res = await fetch(`http://localhost:3000/video/${id}`, {
+            let res = await fetch(`https://projeto-pi-onrender.onrender.com/video/${id}`, {
                 method: "PUT",
                 body: formData
             })

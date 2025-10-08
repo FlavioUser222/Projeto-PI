@@ -238,7 +238,7 @@
 
         async function mostrarVideo() {
             try {
-                let res = await fetch('http://localhost:3000/videos');
+                let res = await fetch('https://projeto-pi-onrender.onrender.com/videos');
                 todosVideos = await res.json(); // salva todos os vídeos
                 exibirVideos(todosVideos) // exibe todos inicialmente
             } catch (error) {
@@ -256,10 +256,10 @@
                 let titulo = document.createElement('p');
 
                 videoCard.className = "videoCard";
-                videoElement.src = `http://localhost:3000/uploads/${video.video}`;
+                videoElement.src = `https://projeto-pi-onrender.onrender.com/uploads/${video.video}`;
                 videoElement.controls = true;
                 videoElement.preload = 'metadata';
-                videoElement.poster = `http://localhost:3000/uploads/${video.thumbnail}`;
+                videoElement.poster = `https://projeto-pi-onrender.onrender.com/uploads/${video.thumbnail}`;
                 videoElement.style.borderRadius = '8px'
                 videoElement.style.maxWidth = '100%'
                 videoElement.style.height = '180px'
