@@ -23,7 +23,6 @@
 
     header {
         background: #e60000;
-        /* vermelho */
         padding: 12px 20px;
         display: flex;
         align-items: center;
@@ -33,6 +32,26 @@
     header img {
         height: 40px;
     }
+
+    footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 40px;
+        background-color: #e60000;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: translateY(100%);
+        transition: transform 0.3s ease;
+    }
+
+    footer.show {
+        transform: translateY(0);
+    }
+
 
     .input-Img {
         display: flex;
@@ -81,16 +100,19 @@
     .content {
         max-width: 1000px;
         width: 100%;
+        margin-top: 52px;
     }
 
     .content-videos {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
         gap: 20px;
         justify-content: center;
         max-width: 1100px;
+        align-items: start;
         width: 100%;
         cursor: pointer;
+        margin: 0 auto;
     }
 
     .videoCard {
@@ -142,7 +164,6 @@
         display: none;
         position: absolute;
         bottom: 80px;
-        /* sobe o balão acima do ícone */
         right: 0;
         background-color: #fff;
         border-radius: 10px;
@@ -150,7 +171,7 @@
         padding: 10px;
         flex-direction: column;
         gap: 8px;
-        width: 180px;
+        width: 250px;
         text-align: left;
         animation: fadeIn 0.2s ease-in-out;
     }
@@ -196,16 +217,46 @@
             font-size: 1.2rem;
         }
     }
+
+    .buttons-opt ul {
+        display: flex;
+        list-style: none;
+        gap: 15px;
+        margin-top: 50px;
+    }
+
+    .buttons-opt li {
+        border-radius: 30px;
+        background-color: #e60000;
+    }
+
+    .buttons-opt a {
+        text-decoration: none;
+        color: white;
+        width: 235px;
+        height: 45px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+    }
+
+    .input-Img img {
+        width: 30px;
+        height: 30px;
+        object-fit: cover;
+    }
 </style>
 
 
 
 <body>
     <header>
-        <img src="" alt="">
+        <img src="" alt="Inclusive.com">
         <div class="input-Img">
             <input type="text" placeholder="Pesquisar curso" id="pesquisarCurso">
-            <img src="" alt="">
+            <img src="../imagens/search.png" alt="Ícone pesquisa">
         </div>
     </header>
 
@@ -215,13 +266,21 @@
             <a href="javascript:void(0)" onclick="clickAcessibilidade()"><img src="../imagens/acessibilidade.png"
                     alt=""></a>
             <div class="options-acessibilidade" id="optionsAcessibilidade">
-                <a href=""><img src="" alt="">Alto contraste</a>
-                <a href=""><img src="" alt="">Aumentar a fonte</a>
-                <a href=""><img src="" alt="">Diminuir a fonte</a>
+                <a href=""><img src="../imagens/contrast.png" alt="Ícone contraste">Alto contraste</a>
+                <a href=""><img src="../imagens/mais.png" alt="Simbolo soma">Aumentar a fonte</a>
+                <a href=""><img src="../imagens/minus-big-symbol.png" alt="Simbolo de subtração">Diminuir a fonte</a>
+                <a href=""><img src="../imagens/color-blindness-test.png" alt="Ícone daltonismo">Daltonismo</a>
             </div>
         </div>
 
-
+        <div class="buttons-opt">
+            <ul>
+                <li><a href="">Celular</a></li>
+                <li><a href="">Computador</a></li>
+                <li><a href="">Compras online</a></li>
+                <li><a href="">Pagamentos</a></li>
+            </ul>
+        </div>
         <div class="content">
             <h1 class="titulo1">Conheça nossos cursos</h1>
             <select name="" id="select">
@@ -230,6 +289,13 @@
             </select>
             <div class="content-videos" id="content-videos"></div>
         </div>
+
+
+        <footer>
+
+        </footer>
+
+
     </div>
 
 
@@ -254,7 +320,13 @@
                 let videoElement = document.createElement('video');
                 let videoCard = document.createElement('div');
                 let titulo = document.createElement('p');
+                let link = document.createElement('a');
+                link.href = `video.html?id=${video.id}`
+                link.style.textDecoration = 'none';
+                link.style.color = 'inherit';
 
+
+                
                 videoCard.className = "videoCard";
                 videoElement.src = `https://projeto-pi-onrender.onrender.com/uploads/${video.video}`;
                 videoElement.controls = true;
@@ -264,10 +336,12 @@
                 videoElement.style.maxWidth = '100%'
                 videoElement.style.height = '180px'
 
-                titulo.innerText = video.nome;
+                titulo.innerText = video.nome
 
-                videoCard.appendChild(videoElement);
-                videoCard.appendChild(titulo);
+
+                link.appendChild(videoElement);
+                link.appendChild(titulo);
+                videoCard.appendChild(link);
                 videosContent.appendChild(videoCard);
             });
         }
@@ -291,7 +365,23 @@
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('pesquisarCurso').addEventListener('input', filtrarVideos);
             mostrarVideo(); // carrega os vídeos ao iniciar
+        })
+
+        window.addEventListener('scroll', () => {
+            const footer = document.querySelector('footer')
+            const scrollTop = window.scrollY + window.innerHeight
+            const docHeight = document.documentElement.scrollHeight
+
+            if (scrollTop >= docHeight - 10) {
+                footer.classList.add('show');
+            } else {
+                footer.classList.remove('show');
+            }
         });
+
+
+
+
     </script>
 
 

@@ -17,8 +17,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-left: calc(180px + 20px);
-
+            margin-left: calc(150px + 20px);
         }
 
         .content {
@@ -38,7 +37,7 @@
         }
 
         .sidebar {
-            width: 180px;
+            width: 150px;
             background-color: #333;
             color: #fff;
             padding: 20px 0;
@@ -146,7 +145,12 @@
             width: 100%;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 1100px) {
+
+            h1{
+                margin-top: 80px;
+            }
+
             .sidebar {
                 transform: translateX(-100%);
             }
@@ -170,7 +174,7 @@
 
             #videosContent {
                 display: grid;
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr 1fr;
                 align-items: center;
                 justify-content: center;
                 gap: 30px;
@@ -195,6 +199,20 @@
                 border-radius: 4px;
                 cursor: pointer;
             }
+        }
+
+        @media (max-width: 800px) {
+
+            #videosContent {
+                display: grid;
+                grid-template-columns: 1fr;
+                align-items: center;
+                justify-content: center;
+                gap: 30px;
+
+            }
+
+
         }
     </style>
 </head>
@@ -236,14 +254,7 @@
                 <input type="text" id="legenda" placeholder="Digite a legenda">
                 <label for="">Transcrição do vídeo</label>
                 <textarea id="transcricao" placeholder="Digite a transcrição"></textarea>
-
-
-
                 <button id="botaoEditar">Editar video</button>
-
-
-
-
             </div>
         </div>
 
@@ -261,11 +272,13 @@
             sidebar.classList.toggle('show');
         });
 
+        let videos = []
+
 
         async function mostrarVideo() {
             try {
                 let res = await fetch('https://projeto-pi-onrender.onrender.com/videos');
-                let videos = await res.json();
+                videos = await res.json()
                 let videosContent = document.getElementById('videosContent');
 
                 videos.forEach((video) => {
@@ -282,8 +295,6 @@
                     videoElement.height = 225;
                     videoElement.poster = `https://projeto-pi-onrender.onrender.com/uploads/${video.thumbnail}`;
                     videoElement.style.borderRadius = '8px';
-
-
 
                     let divButtons = document.createElement('div')
                     divButtons.className = "divButtons"
@@ -302,9 +313,24 @@
 
 
         async function excluirVideo(id) {
-            let res = await fetch(`https://projeto-pi-onrender.onrender.com/video/${id}`, {
-                method: "DELETE"
-            })
+            if (!confirm("Tem certeza que deseja excluir este vídeo?")) return;
+
+            try {
+                let res = await fetch(`https://projeto-pi-onrender.onrender.com/video/${id}`, {
+                    method: "DELETE"
+                });
+
+                if (res.ok) {
+                    alert("✅ Vídeo excluído com sucesso!");
+                    document.getElementById('videosContent').innerHTML = '';
+                    mostrarVideo();
+                } else {
+                    alert("⚠️ Erro ao excluir o vídeo.");
+                }
+            } catch (err) {
+                console.error("Erro ao excluir vídeo:", err);
+                alert("❌ Falha ao conectar ao servidor.");
+            }
         }
 
 

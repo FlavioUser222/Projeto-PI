@@ -13,28 +13,49 @@
         box-sizing: border-box;
     }
 
+    h1 {
+        margin-top: 60px;
+    }
+
     .container {
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: center;
+        width: calc(100% - 150px);
+        margin-left: 150px;
+        flex-wrap: wrap;
     }
 
     .content {
         display: flex;
         flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        max-width: 900px;
+        align-items: flex-start;
         gap: 10px;
+        margin-top: 65px;
+        width: 510px;
+        flex-wrap: wrap;
     }
 
-    input {
-        padding: 8px 12px;
+    input,
+    #select {
+        width: 510px;
+        height: 36px;
+        border: 1px solid black;
+        border-radius: 5px;
+       
     }
+
+    .content input,
+    .content select,
+    .content button {
+        align-self: center;
+    }
+
 
     .buttonEnviar {
-        padding: 8px 12px;
+        width: 170px;
+        height: 50px;
         color: white;
         background-color: #555;
         border-radius: 4px;
@@ -42,7 +63,7 @@
     }
 
     .sidebar {
-        width: 180px;
+        width: 150px;
         background-color: #333;
         color: #fff;
         padding: 20px 0;
@@ -89,16 +110,37 @@
 
     .buttons {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
-        gap: 20px;
+        justify-content: center;
+        width: 510px;
+        gap: 50px;
+        margin-top: 40px;
     }
+
+    .button-video,
+    .thumb {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    #video,
+    #thumb {
+        width: 150px;
+    }
+
 
     .sidebar .icons a:hover {
         background-color: #555;
     }
 
     @media (max-width: 768px) {
+        .container {
+            width: 100%;
+            margin-left: 0;
+        }
+
         .sidebar {
             transform: translateX(-100%);
         }
@@ -145,37 +187,42 @@
 
 
     <div class="container">
+        <h1>Area administrador</h1>
+
         <div class="content" id="content">
-            <h1>Area admin</h1>
-            <label for="">Digite o nome do video</label>
+            <label for="">Nome do video</label>
             <input type="text" id="nome" placeholder="Digite o nome do video" required>
-            <div class="buttons">
-                <label for="">Envie o video</label>
-                <input type="file" id="video" accept="video/*" required>
-                <label for="">Thumbnail do video</label>
-                <input type="file" id="thumb" accept="image/*" required>
-            </div>
             <label for="">Descricão do video</label>
             <input type="text" id="descricao" placeholder="Digite a descrição do video" required>
             <label for="">Legenda do vídeo</label>
             <input type="text" id="legenda" placeholder="Digite a legenda">
             <label for="">Transcrição do vídeo</label>
-            <textarea id="transcricao" placeholder="Digite a transcrição"></textarea>
+            <input type="text" id="transcricao" placeholder="Digite a transcrição">
+            <label for="">Categoria do video</label>
             <select name="" id="select">
-                <option selected disabled>Categoria do video</option>
+                <option selected disabled>Escolha categoria do video</option>
             </select>
 
+            <div class="buttons">
+                <div class="button-video">
+                    <label for="">Envie o video</label>
+                    <input type="file" id="video" accept="video/*" required>
+                </div>
+                <div class="thumb">
+                    <label for="">Thumbnail do video</label>
+                    <input type="file" id="thumb" accept="image/*" required>
+                </div>
+            </div>
 
-
-
-
-            <button onclick="postarDados()" class="buttonEnviar">Enviar dados</button>
+            <button onclick="postarDados()" class="buttonEnviar">Publicar video</button>
         </div>
     </div>
 
     <script>
         const menuBtn = document.getElementById('menu-btn');
         const sidebar = document.getElementById('sidebar');
+        let categorias = []
+
 
         menuBtn.addEventListener('click', () => {
             sidebar.classList.toggle('show');
@@ -183,6 +230,9 @@
 
 
         async function postarDados() {
+
+
+
             let nome = document.getElementById('nome').value
             let video = document.getElementById('video')
             let descricao = document.getElementById('descricao').value
@@ -192,37 +242,57 @@
             const legenda = document.getElementById('legenda').value;
             const transcricao = document.getElementById('transcricao').value
 
-
-            if (!categoria || categoria === 'Categoria do video') {
-                alert("Selecione uma categoria antes de enviar!");
-                return
-            }
-
-
-
-            formData.append('nome', nome)
-            formData.append('descricao', descricao)
-            formData.append('video', videoFile)
-            formData.append('thumbnail', thumbFile)
-            formData.append('legenda', legenda)
-            formData.append('categoria', categoria)
-
-            formData.append('transcricao', transcricao)
-
-
-            let res = await fetch('https://projeto-pi-onrender.onrender.com/video', {
-                method: "POST",
-                body: formData
-            })
-        }
-
-        async function categoriaVideo() {
+            const categoria = document.getElementById('select').value
 
             try {
 
 
+
+                if (!categoria || categoria === 'Categoria do video') {
+                    alert("Selecione uma categoria antes de enviar!");
+                    return
+                }
+
+                formData.append('nome', nome)
+                formData.append('descricao', descricao)
+                formData.append('video', videoFile)
+                formData.append('thumbnail', thumbFile)
+                formData.append('legenda', legenda)
+                formData.append('categoria_id', categoria)
+                formData.append('transcricao', transcricao)
+
+
+                let res = await fetch('https://projeto-pi-onrender.onrender.com/video', {
+                    method: "POST",
+                    body: formData
+                })
+
+                if (res.ok) {
+                    alert("✅ Vídeo enviado com sucesso!")
+                    document.getElementById('nome').value = ''
+                    document.getElementById('descricao').value = ''
+                    document.getElementById('legenda').value = ''
+                    document.getElementById('transcricao').value = ''
+                    document.getElementById('select').selectedIndex = 0
+                    document.getElementById('video').value = ''
+                    document.getElementById('thumb').value = ''
+                } else {
+                    alert("⚠️ Erro ao enviar o vídeo.")
+                }
+
+
+            } catch (error) {
+                console.error(error)
+            }
+
+
+
+        }
+
+        async function categoriaVideo() {
+            try {
                 let res = await fetch('https://projeto-pi-onrender.onrender.com/categorias')
-                const categorias = await res.json()
+                categorias = await res.json()
 
                 const select = document.getElementById('select')
 
