@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Assistir Vídeo</title>
 </head>
+
 <body>
     <div style="text-align:center; margin-top:50px;">
         <h1 id="tituloVideo"></h1>
-        <video id="videoPlayer" controls style="width:80%; max-width:700px; border-radius:10px;"></video>
+        <video id="videoPlayer" controls style="width:80%; max-width:700px; border-radius:10px;">
+            <track id="legendaPt" label="Português" kind="subtitles" srclang="pt" src="" default>
+        </video>
     </div>
 
     <script>
@@ -20,12 +24,28 @@
                 .then(res => res.json())
                 .then(videos => {
                     const video = videos.find(v => v.id == videoId);
-                    if(video){
-                        document.getElementById('tituloVideo').innerText = video.nome
-                        document.getElementById('videoPlayer').src = `https://projeto-pi-onrender.onrender.com/uploads/${video.video}`;
+
+                    if (videoId) {
+                        fetch('https://projeto-pi-onrender.onrender.com/videos')
+                            .then(res => res.json())
+                            .then(videos => {
+                                const video = videos.find(v => v.id == videoId);
+                                if (video) {
+                                    document.getElementById('tituloVideo').innerText = video.nome;
+                                    
+                                    legendaPt.src = `https://projeto-pi-onrender.onrender.com/uploads/${video.legenda}`;
+
+                                    videoPlayer.src = `https://projeto-pi-onrender.onrender.com/uploads/${video.video}`;
+
+                                    legendaPt.addEventListener('load', () => {
+                                        videoPlayer.textTracks[0].mode = 'showing'; // força a exibição da legenda
+                                    });
+                                }
+                            });
                     }
                 });
         }
     </script>
 </body>
+
 </html>
