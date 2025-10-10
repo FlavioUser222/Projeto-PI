@@ -15,6 +15,7 @@
     body {
         background: #fff;
         color: #333;
+        font-size: 20px;
     }
 
     img {
@@ -131,7 +132,7 @@
 
     .videoCard p {
         margin-top: 10px;
-        font-size: 14px;
+        font-size: inherit;
         text-align: center;
     }
 
@@ -304,9 +305,11 @@
             <div class="options-acessibilidade" id="optionsAcessibilidade">
                 <a href="javascript:void(0)" id="btnContraste"><img src="../imagens/contrast.png"
                         alt="Ícone contraste">Alto contraste</a>
-                <a href=""><img src="../imagens/mais.png" alt="Simbolo soma">Aumentar a fonte</a>
-                <a href=""><img src="../imagens/minus-big-symbol.png" alt="Simbolo de subtração">Diminuir a fonte</a>
-                <a href=""><img src="../imagens/color-blindness-test.png" alt="Ícone daltonismo">Daltonismo</a>
+                <a href="javascript:void(0)" id="btnMais"><img src="../imagens/mais.png" alt="Simbolo soma">Aumentar a fonte</a>
+                <a href="javascript:void(0)" id="btnMenos"><img src="../imagens/minus-big-symbol.png"
+                        alt="Simbolo de subtração">Diminuir a fonte</a>
+                <a href="javascript:void(0)"><img src="../imagens/color-blindness-test.png"
+                        alt="Ícone daltonismo">Daltonismo</a>
             </div>
         </div>
 
@@ -338,6 +341,7 @@
 
     <script>
         let todosVideos = [] // variável global para guardar todos os vídeos
+        let fontSize = parseInt(localStorage.getItem('fontSize'), 10) || 20
 
         async function mostrarVideo() {
             try {
@@ -406,11 +410,44 @@
             }
         }
 
+        function aplicarTamanhoDaFonte() {
+            document.body.style.fontSize = fontSize + 'px'
+            localStorage.setItem('fontSize', fontSize)
+        }
+
+        function aumentarFonte(e) {
+            if (e && e.preventDefault) e.preventDefault()
+
+            if (fontSize < 32) {
+                fontSize += 2
+                aplicarTamanhoDaFonte()
+            }
+        }
+        function diminuirFonte(e) {
+
+            if (e && e.preventDefault) e.preventDefault()
+            if (fontSize > 20) {
+                fontSize -= 2
+                aplicarTamanhoDaFonte()
+            }
+        }
+
+
 
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('pesquisarCurso').addEventListener('input', filtrarVideos)
             document.getElementById('btnContraste').addEventListener('click', autoContraste)
+
+
+            const btnMais = document.getElementById('btnMais');
+            const btnMenos = document.getElementById('btnMenos');
+
+            if (btnMais) btnMais.addEventListener('click', aumentarFonte);
+            if (btnMenos) btnMenos.addEventListener('click', diminuirFonte);
+            aplicarTamanhoDaFonte()
+
             mostrarVideo()
+
             if (localStorage.getItem('modoContraste') === 'ativo') {
                 document.body.classList.add('alto-contraste');
             }
