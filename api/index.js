@@ -172,7 +172,7 @@ app.post('/login', async (req, res) => {
     if (!email || !senha) {
       return res.status(400).json({ error: 'Informe usuário e senha!' })
     }
-    
+
     const result = await pool.query('SELECT * FROM cadastros WHERE email = $1 AND senha = $2', [email, senha])
 
     if (result.rows.length === 0) {
