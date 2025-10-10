@@ -7,12 +7,13 @@
     <title>Document</title>
 </head>
 <style>
-    *{
+    * {
         padding: 0;
         margin: 0;
         box-sizing: border-box;
     }
-    body{
+
+    body {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -21,7 +22,7 @@
         color: white;
     }
 
-    .container{
+    .container {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -33,29 +34,27 @@
         border-radius: 10px;
         gap: 10px;
     }
-    h1{
+
+    h1 {
         padding-bottom: 30px;
     }
 
-    input{
+    input {
         padding: 8px 12px;
     }
 
-    button{
+    button {
         background-color: rgb(255, 255, 255);
         padding: 10px 20px;
     }
-
-
-
 </style>
+
 <body>
 
     <div class="container">
         <h1>Entrar no sistema</h1>
-
-
-        <input type="text" id="user" placeholder="Email">
+        
+        <input type="text" id="email" placeholder="Email">
         <input type="password" id="senha" placeholder="Senha">
         <button onclick="postarDados()">Entrar</button>
     </div>
@@ -63,9 +62,9 @@
     <script>
 
         async function postarDados() {
-            let user = document.getElementById('user').value
+            let email = document.getElementById('user').value
 
-            if (!isNaN(user) || user == "" || user == null) {
+            if (!isNaN(email) || email == "" || email == null) {
                 return
             }
 
@@ -76,7 +75,7 @@
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ user, senha })
+                body: JSON.stringify({ email, senha })
             })
         }
     </script>

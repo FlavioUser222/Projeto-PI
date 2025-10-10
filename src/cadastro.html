@@ -7,23 +7,56 @@
     <title>Document</title>
 </head>
 <style>
-    
-.container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-}
+    * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
 
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        color: white;
+    }
 
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        max-width: 500px;
+        width: 100%;
+        height: 500px;
+        background-color: #242222;
+        border-radius: 10px;
+        gap: 10px;
+    }
+
+    h1 {
+        padding-bottom: 30px;
+    }
+
+    input {
+        padding: 8px 12px;
+    }
+
+    button {
+        background-color: rgb(255, 255, 255);
+        padding: 10px 20px;
+    }
 </style>
 
 <body>
     <div class="container">
         <h1>Cadastrar</h1>
-        <input type="text" id="user">
-        <input type="password" id="senha">
+        <input type="text" id="nome" placeholder="Nome">
+        <input type="text" id="email" placeholder="Email">
+        <input type="password" id="senha" placeholder="Senha">
+
+
         <button onclick="postarDados()">Cadastrar-se</button>
     </div>
 
@@ -32,20 +65,22 @@
 
         async function postarDados() {
 
-            let user = document.getElementById('user').value
+            let email = document.getElementById('email').value
+            let nome = document.getElementById('nome').value
 
-            if (!isNaN(user) || user == "" || user == null) {
+            if (!isNaN(email) || email == "" || email == null) {
                 return
             }
-
             let senha = document.getElementById('senha').value
+
+
 
             let res = await fetch('https://projeto-pi-onrender.onrender.com/cadastro', {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ user, senha })
+                body: JSON.stringify({ nome,email, senha})
             })
         }
 

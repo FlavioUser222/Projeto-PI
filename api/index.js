@@ -157,8 +157,8 @@ app.get('/cadastros', async (req, res) => {
 
 app.post('/cadastro', async (req, res) => {
   try {
-    const { user, senha } = req.body;
-    await pool.query('INSERT INTO cadastros (nome, senha) VALUES ($1, $2)', [user, senha]);
+    const { nome, email, senha } = req.body;
+    await pool.query('INSERT INTO cadastros (nome,email, senha) VALUES ($1, $2,$3)', [nome, email, senha]);
     res.send('🧍 Cadastro criado com sucesso!');
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -167,13 +167,13 @@ app.post('/cadastro', async (req, res) => {
 
 app.post('/login', async (req, res) => {
   try {
-    const { user, senha } = req.body
+    const { email, senha } = req.body
 
-    if (!user || !senha) {
+    if (!email || !senha) {
       return res.status(400).json({ error: 'Informe usuário e senha!' })
     }
-
-    const result = await pool.query('SELECT * FROM cadastros WHERE nome = $1 AND senha = $2', [user, senha])
+    
+    const result = await pool.query('SELECT * FROM cadastros WHERE email = $1 AND senha = $2', [email, senha])
 
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Usuário não encontrado!' })
