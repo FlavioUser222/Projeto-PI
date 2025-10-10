@@ -35,7 +35,7 @@
         margin-top: 65px;
         width: 100%;
         max-width: 510px;
-        flex-wrap: wrap;
+
     }
 
     input,
@@ -114,8 +114,10 @@
         flex-direction: row;
         align-items: center;
         justify-content: center;
-        width: 510px;
-        gap: 50px;
+        width: 100%;
+        max-width: 610px;
+        gap: 30px;
+        padding-bottom: 20px;
         margin-top: 40px;
     }
 
@@ -126,10 +128,7 @@
         gap: 30px;
     }
 
-    #video,
-    #thumb {
-        width: 150px;
-    }
+   
 
 
     .sidebar .icons a:hover {
@@ -149,11 +148,6 @@
         h1{
             align-items:center;
         }
-
-        input,
-        #select{
-        }
-
 
         .sidebar {
             transform: translateX(-100%);
@@ -272,6 +266,7 @@
             const formData = new FormData()
             const legenda = document.getElementById('legenda').value;
             const transcricao = document.getElementById('transcricao').value
+
 
             const categoria = document.getElementById('select').value
 

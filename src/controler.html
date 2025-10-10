@@ -147,7 +147,7 @@
 
         @media (max-width: 1100px) {
 
-            h1{
+            h1 {
                 margin-top: 80px;
             }
 
@@ -243,17 +243,23 @@
         <div class="modal" id="modal">
             <div class="modal-content" id="modalContent">
                 <label for="">Digite o novo nome do video</label>
-                <input type="text" id="nome" required>
+                <input type="text" id="nome" required placeholder="Novo nome">
+                <label for="">Nova descricão do video</label>
+                <input type="text" id="descricao" required placeholder="Nova descricao">
+                <label for="">Legenda do vídeo</label>
+                <input type="text" id="legenda" placeholder="Digite a legenda">
+                <label for="">Transcrição do vídeo</label>
+                <input type="text" id="transcricao" placeholder="Digite a transcrição">
+
+                <select name="" id="select">
+                    <option selected disabled>Escolha categoria do video</option>
+                </select>
+
+
                 <label for="">Envie o video novo</label>
                 <input type="file" id="video" accept="video/*" required>
                 <label for="">Thumbnail nova do video</label>
                 <input type="file" id="thumb" accept="image/*" required>
-                <label for="">Nova descricão do video</label>
-                <input type="text" id="descricao" required>
-                <label for="">Legenda do vídeo</label>
-                <input type="text" id="legenda" placeholder="Digite a legenda">
-                <label for="">Transcrição do vídeo</label>
-                <textarea id="transcricao" placeholder="Digite a transcrição"></textarea>
                 <button id="botaoEditar">Editar video</button>
             </div>
         </div>
@@ -350,18 +356,26 @@
             let descricao = document.getElementById('descricao').value
             const thumbFile = document.getElementById('thumb').files[0]
             const videoFile = video.files[0]
+            let legenda = document.getElementById('legenda').value
+            let transcricao = document.getElementById('transcricao').value
+
+
             const formData = new FormData()
+
+            const categoria = document.getElementById('select').value
 
             formData.append('nome', nome)
             formData.append('descricao', descricao)
+            formData.append('legenda', legenda)
+            formData.append('transcricao', transcricao)
             formData.append('video', videoFile)
+            formData.append('categoria_id', categoria)
             formData.append('thumbnail', thumbFile)
 
             let res = await fetch(`https://projeto-pi-onrender.onrender.com/video/${id}`, {
                 method: "PUT",
                 body: formData
             })
-
 
             if (res.ok) {
                 alert("Vídeo atualizado com sucesso!");
@@ -372,8 +386,35 @@
                 alert("Erro ao atualizar o vídeo.");
             }
 
+        }
+
+        async function categoriaVideo() {
+            try {
+                let res = await fetch('https://projeto-pi-onrender.onrender.com/categorias')
+                categorias = await res.json()
+
+                const select = document.getElementById('select')
+
+                categorias.forEach(categoria => {
+                    let opt = document.createElement('option')
+
+                    opt.value = categoria.id
+                    opt.innerText = categoria.nome
+
+                    select.appendChild(opt)
+                })
+            } catch (error) {
+                console.error("Erro ao carregar categorias:", error)
+            }
 
         }
+
+        categoriaVideo()
+
+
+
+
+
 
 
         mostrarVideo();
