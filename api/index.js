@@ -179,7 +179,7 @@ app.post('/login', async (req, res) => {
       return res.status(404).json({ error: 'Usuário não encontrado!' })
     }
 
-    if (adm && !usuario.adm) {
+    if (adm && !usuario.isAdmin) {
       return res.status(403).json({ error: 'Você não tem permissão de administrador!' })
     }
 
