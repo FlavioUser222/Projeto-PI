@@ -17,9 +17,8 @@
         width: 100%;
     }
 
-
     header {
-        background: #e60000;
+        background: #cc1919;
         padding: 12px 20px;
         display: flex;
         align-items: center;
@@ -56,8 +55,11 @@
     }
 
     .container {
-        text-align: center;
-        margin-top: 50px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        margin-top: 150px;
     }
 
     .video {
@@ -65,15 +67,23 @@
         max-width: 800px;
         border-radius: 10px;
     }
-    .goBack{
+
+    .goBack {
         position: fixed;
-        left: 20px;
-        
+        left: 100px;
+        width: 80px;
+        height: 80px;
+        height: 100px;
+        margin-top: 50px;
     }
 
+    .goBack img {
+        width: 50px;
+        height: 50px;
 
-
+    }
 </style>
+
 
 
 
@@ -82,25 +92,20 @@
 
     <header>
         <img src="" alt="Inclusive.com">
-        <div class="input-Img">
-            <input type="text" placeholder="Pesquisar curso" id="pesquisarCurso">
-            <img src="../imagens/search.png" alt="Ícone pesquisa">
-        </div>
     </header>
 
+    <div class="goBack">
+        <a href="inclusive.html"><img src="../imagens/seta-esquerda.png" alt="Seta de Voltar"></a>
+    </div>
     <div class="container">
-        <div class="goBack">
-            <a href="inclusive.html"><img src="" alt=""></a>
-        </div>
-
-
-
-
 
         <h1 id="tituloVideo"></h1>
         <video id="videoPlayer" controls class="video">
             <track id="legendaPt" label="Português" kind="subtitles" srclang="pt" src="" default>
         </video>
+
+        <p id="descricao"></p>
+
     </div>
 
 
@@ -120,13 +125,16 @@
                         fetch('https://projeto-pi-onrender.onrender.com/videos')
                             .then(res => res.json())
                             .then(videos => {
-                                const video = videos.find(v => v.id == videoId);
+                                const video = videos.find(v => v.id == videoId)
                                 if (video) {
-                                    document.getElementById('tituloVideo').innerText = video.nome;
+                                    document.getElementById('tituloVideo').innerText = video.nome
 
-                                    legendaPt.src = `https://projeto-pi-onrender.onrender.com/uploads/${video.legenda}`;
+                                    legendaPt.src = `https://projeto-pi-onrender.onrender.com/uploads/${video.legenda}`
 
-                                    videoPlayer.src = `https://projeto-pi-onrender.onrender.com/uploads/${video.video}`;
+                                    videoPlayer.src = `https://projeto-pi-onrender.onrender.com/uploads/${video.video}`
+
+                                    document.getElementById('descricao').innerText = video.descricao
+
 
                                     legendaPt.addEventListener('load', () => {
                                         videoPlayer.textTracks[0].mode = 'showing'; // força a exibição da legenda

@@ -329,10 +329,6 @@
         </div>
         <div class="content">
             <h1 class="titulo1">Conheça nossos cursos</h1>
-            <select name="" id="select">
-                <option selected disabled>Filtrar por:</option>
-
-            </select>
             <div class="content-videos" id="content-videos"></div>
         </div>
 
@@ -346,14 +342,14 @@
 
 
     <script>
-        let todosVideos = [] // variável global para guardar todos os vídeos
+        let todosVideos = [] 
         let fontSize = parseInt(localStorage.getItem('fontSize'), 10) || 20
 
         async function mostrarVideo() {
             try {
                 let res = await fetch('https://projeto-pi-onrender.onrender.com/videos');
-                todosVideos = await res.json(); // salva todos os vídeos
-                exibirVideos(todosVideos) // exibe todos inicialmente
+                todosVideos = await res.json()
+                exibirVideos(todosVideos) 
             } catch (error) {
                 console.error(error);
             }
