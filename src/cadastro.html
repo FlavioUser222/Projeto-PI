@@ -47,6 +47,10 @@
         background-color: rgb(255, 255, 255);
         padding: 10px 20px;
     }
+
+    a {
+        color: rgb(136, 62, 255);
+    }
 </style>
 
 <body>
@@ -81,7 +85,7 @@
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ nome,email, senha})
+                body: JSON.stringify({ nome, email, senha })
             })
         }
 

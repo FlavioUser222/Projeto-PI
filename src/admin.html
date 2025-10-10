@@ -47,13 +47,19 @@
         background-color: rgb(255, 255, 255);
         padding: 10px 20px;
     }
+a{
+    color: rgb(136, 62, 255);
+}
+
+
+
 </style>
 
 <body>
 
     <div class="container">
         <h1>Entrar no sistema</h1>
-        
+
         <input type="text" id="email" placeholder="Email">
         <input type="password" id="senha" placeholder="Senha">
         <button onclick="postarDados()">Entrar</button>
@@ -63,21 +69,39 @@
     <script>
 
         async function postarDados() {
-            let email = document.getElementById('user').value
+            let email = document.getElementById('email').value
             let senha = document.getElementById('senha').value
 
             if (!isNaN(email) || email == "" || email == null) {
                 return
             }
 
+            try {
+                let res = await fetch('https://projeto-pi-onrender.onrender.com/login', {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ email, senha })
+                })
 
-            let res = await fetch('https://projeto-pi-onrender.onrender.com/login', {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ email, senha })
-            })
+                let data = await res.json()
+                console.log(data)
+
+                if (res.ok) {
+                    alert("Login realizado com sucesso!")
+                     window.location.href = "index.html"
+                } else {
+                    alert(data.error || "Erro ao fazer login!");
+                }
+
+
+
+
+            } catch (error) {
+                alert('Erro ao realizar login')
+            }
+
         }
     </script>
 
