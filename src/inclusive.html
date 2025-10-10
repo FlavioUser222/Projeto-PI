@@ -247,6 +247,42 @@
         height: 30px;
         object-fit: cover;
     }
+
+    body.alto-contraste {
+        background-color: #000 !important;
+        color: #fff !important;
+    }
+
+    body.alto-contraste header,
+    body.alto-contraste footer {
+        background-color: #000 !important;
+        color: #fff !important;
+    }
+
+    body.alto-contraste a {
+        color: #ff0 !important;
+    }
+
+    body.alto-contraste .videoCard {
+        background-color: #111 !important;
+        box-shadow: 0 0 5px #fff !important;
+    }
+
+    body.alto-contraste input,
+    body.alto-contraste select {
+        background-color: #222 !important;
+        color: #fff !important;
+        border: 1px solid #fff !important;
+    }
+
+    body.alto-contraste .options-acessibilidade {
+        background-color: #000 !important;
+        border: 1px solid #fff !important;
+    }
+
+    body.alto-contraste .options-acessibilidade a:hover {
+        background-color: #222 !important;
+    }
 </style>
 
 
@@ -266,7 +302,8 @@
             <a href="javascript:void(0)" onclick="clickAcessibilidade()"><img src="../imagens/acessibilidade.png"
                     alt=""></a>
             <div class="options-acessibilidade" id="optionsAcessibilidade">
-                <a href=""><img src="../imagens/contrast.png" alt="Ícone contraste">Alto contraste</a>
+                <a href="javascript:void(0)" id="btnContraste"><img src="../imagens/contrast.png"
+                        alt="Ícone contraste">Alto contraste</a>
                 <a href=""><img src="../imagens/mais.png" alt="Simbolo soma">Aumentar a fonte</a>
                 <a href=""><img src="../imagens/minus-big-symbol.png" alt="Simbolo de subtração">Diminuir a fonte</a>
                 <a href=""><img src="../imagens/color-blindness-test.png" alt="Ícone daltonismo">Daltonismo</a>
@@ -326,7 +363,7 @@
                 link.style.color = 'inherit';
 
 
-                
+
                 videoCard.className = "videoCard";
                 videoElement.src = `https://projeto-pi-onrender.onrender.com/uploads/${video.video}`;
                 videoElement.poster = `https://projeto-pi-onrender.onrender.com/uploads/${video.thumbnail}`;
@@ -360,9 +397,24 @@
             options.style.display = isVisible ? "none" : "flex";
         }
 
+        function autoContraste() {
+            document.body.classList.toggle('alto-contraste')
+            if (document.body.classList.contains('alto-contraste')) {
+                localStorage.setItem('modoContraste', 'ativo');
+            } else {
+                localStorage.removeItem('modoContraste');
+            }
+        }
+
+
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('pesquisarCurso').addEventListener('input', filtrarVideos);
-            mostrarVideo(); // carrega os vídeos ao iniciar
+            document.getElementById('pesquisarCurso').addEventListener('input', filtrarVideos)
+            document.getElementById('btnContraste').addEventListener('click', autoContraste)
+            mostrarVideo()
+            if (localStorage.getItem('modoContraste') === 'ativo') {
+                document.body.classList.add('alto-contraste');
+            }
+
         })
 
         window.addEventListener('scroll', () => {
