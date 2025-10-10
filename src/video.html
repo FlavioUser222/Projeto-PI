@@ -6,14 +6,105 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Assistir Vídeo</title>
 </head>
+<style>
+    * {
+        padding: 0px;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    img {
+        width: 100%;
+    }
+
+
+    header {
+        background: #e60000;
+        padding: 12px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    header img {
+        height: 40px;
+    }
+
+    .input-Img {
+        display: flex;
+        align-items: center;
+        background: #fff;
+        border-radius: 20px;
+        padding: 5px 10px;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .input-Img input {
+        border: none;
+        outline: none;
+        flex: 1;
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .input-Img img {
+        width: 20px;
+        height: 20px;
+        object-fit: cover;
+
+    }
+
+    .container {
+        text-align: center;
+        margin-top: 50px;
+    }
+
+    .video {
+        width: 100%;
+        max-width: 800px;
+        border-radius: 10px;
+    }
+    .goBack{
+        position: fixed;
+        left: 20px;
+        
+    }
+
+
+
+</style>
+
+
+
 
 <body>
-    <div style="text-align:center; margin-top:50px;">
+
+    <header>
+        <img src="" alt="Inclusive.com">
+        <div class="input-Img">
+            <input type="text" placeholder="Pesquisar curso" id="pesquisarCurso">
+            <img src="../imagens/search.png" alt="Ícone pesquisa">
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="goBack">
+            <a href="inclusive.html"><img src="" alt=""></a>
+        </div>
+
+
+
+
+
         <h1 id="tituloVideo"></h1>
-        <video id="videoPlayer" controls style="width:80%; max-width:700px; border-radius:10px;">
+        <video id="videoPlayer" controls class="video">
             <track id="legendaPt" label="Português" kind="subtitles" srclang="pt" src="" default>
         </video>
     </div>
+
+
+
 
     <script>
         const params = new URLSearchParams(window.location.search);
@@ -32,7 +123,7 @@
                                 const video = videos.find(v => v.id == videoId);
                                 if (video) {
                                     document.getElementById('tituloVideo').innerText = video.nome;
-                                    
+
                                     legendaPt.src = `https://projeto-pi-onrender.onrender.com/uploads/${video.legenda}`;
 
                                     videoPlayer.src = `https://projeto-pi-onrender.onrender.com/uploads/${video.video}`;
