@@ -167,7 +167,7 @@ app.post('/cadastro', async (req, res) => {
 
 app.post('/login', async (req, res) => {
   try {
-    const { email, senha, adm } = req.body
+    const { email, senha } = req.body
 
     if (!email || !senha) {
       return res.status(400).json({ error: 'Informe usuário e senha!' })
@@ -179,12 +179,6 @@ app.post('/login', async (req, res) => {
       return res.status(404).json({ error: 'Usuário não encontrado!' })
     }
 
-    const usuario = result.rows[0]
-
-
-    if (adm && !usuario.isAdmin) {
-      return res.status(403).json({ error: 'Você não tem permissão de administrador!' })
-    }
 
     res.json({
       message: 'Login realizado com sucesso!',

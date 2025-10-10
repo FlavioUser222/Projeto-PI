@@ -62,15 +62,7 @@
         <input type="password" id="senha" placeholder="Senha">
         <button onclick="postarDados()">Entrar</button>
         <a href="cadastro.html">Não possui conta?</a>
-        <div class="input-adm">
-            <input type="radio" id="adm" name="tipoLogin">
-            <label for="adm">Entrar como administrador</label>
-        </div>
-
-
-
-
-
+      
     </div>
 
     <script>
@@ -82,8 +74,7 @@
         async function postarDados() {
             let email = document.getElementById('email').value
             let senha = document.getElementById('senha').value
-            let adm = document.getElementById('adm').checked
-
+    
 
             if (!isNaN(email) || email == "" || email == null) {
                 return
@@ -112,7 +103,7 @@
                 alert('Erro ao realizar login')
             }
         }
-        document.getElementById('adm').checked = false
+
 
     </script>
 
