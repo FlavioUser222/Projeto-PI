@@ -47,12 +47,10 @@
         background-color: rgb(255, 255, 255);
         padding: 10px 20px;
     }
-a{
-    color: rgb(136, 62, 255);
-}
 
-
-
+    a {
+        color: rgb(136, 62, 255);
+    }
 </style>
 
 <body>
@@ -64,13 +62,28 @@ a{
         <input type="password" id="senha" placeholder="Senha">
         <button onclick="postarDados()">Entrar</button>
         <a href="cadastro.html">Não possui conta?</a>
+        <div class="input-adm">
+            <input type="radio" id="adm" name="tipoLogin">
+            <label for="adm">Entrar como administrador</label>
+        </div>
+
+
+
+
+
     </div>
 
     <script>
 
+
+
+
+
         async function postarDados() {
             let email = document.getElementById('email').value
             let senha = document.getElementById('senha').value
+            let adm = document.getElementById('adm').checked
+
 
             if (!isNaN(email) || email == "" || email == null) {
                 return
@@ -82,7 +95,7 @@ a{
                     headers: {
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify({ email, senha })
+                    body: JSON.stringify({ email, senha, adm })
                 })
 
                 let data = await res.json()
@@ -90,19 +103,17 @@ a{
 
                 if (res.ok) {
                     alert("Login realizado com sucesso!")
-                     window.location.href = "index.html"
+                    window.location.href = "index.html"
                 } else {
                     alert(data.error || "Erro ao fazer login!");
                 }
 
-
-
-
             } catch (error) {
                 alert('Erro ao realizar login')
             }
-
         }
+        document.getElementById('adm').checked = false
+
     </script>
 
 </body>

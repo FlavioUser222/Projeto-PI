@@ -167,17 +167,23 @@ app.post('/cadastro', async (req, res) => {
 
 app.post('/login', async (req, res) => {
   try {
-    const { email, senha } = req.body
+    const { email, senha, adm } = req.body
 
     if (!email || !senha) {
       return res.status(400).json({ error: 'Informe usuário e senha!' })
     }
 
-    const result = await pool.query('SELECT * FROM cadastros WHERE email = $1 AND senha = $2', [email, senha])
+    const result = await pool.query('SELECT * FROM cadastros WHERE email = $1 AND senha = $2 ', [email, senha])
 
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Usuário não encontrado!' })
     }
+
+    if (adm && !usuario.adm) {
+      return res.status(403).json({ error: 'Você não tem permissão de administrador!' })
+    }
+
+
 
     res.json({
       message: 'Login realizado com sucesso!',
