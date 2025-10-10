@@ -33,23 +33,26 @@
         align-items: flex-start;
         gap: 10px;
         margin-top: 65px;
-        width: 510px;
+        width: 100%;
+        max-width: 510px;
         flex-wrap: wrap;
     }
 
     input,
     #select {
-        width: 510px;
+        width: 100%;
+        max-width: 510px;
         height: 36px;
         border: 1px solid black;
         border-radius: 5px;
-       
+
     }
 
     .content input,
     .content select,
     .content button {
         align-self: center;
+        padding: 20px 12px;
     }
 
 
@@ -135,11 +138,25 @@
         background-color: #555;
     }
 
-    @media (max-width: 768px) {
+
+    @media (max-width: 900px) {
         .container {
             width: 100%;
             margin-left: 0;
+            padding: 10px;
         }
+        .content{
+            align-items: center;
+        }
+        h1{
+            align-items:center;
+        }
+
+        input,
+        #select{
+            padding: 20px 12px;
+        }
+
 
         .sidebar {
             transform: translateX(-100%);
@@ -147,10 +164,6 @@
 
         .sidebar.show {
             transform: translateX(0);
-        }
-
-        .sidebar .menu-toggle {
-            display: block;
         }
 
         .icons {
@@ -169,6 +182,27 @@
             font-size: 20px;
             border-radius: 4px;
             cursor: pointer;
+        }
+
+        h1 {
+            margin-top: 100px;
+            font-size: 1.5rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .buttonEnviar {
+            width: 100%;
+        }
+
+        input,
+        #select {
+            font-size: 0.9rem;
+        }
+
+        .buttons {
+            flex-direction: column;
+            align-items: center;
         }
     }
 </style>
