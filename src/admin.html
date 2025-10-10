@@ -68,9 +68,6 @@
     <script>
 
 
-
-
-
         async function postarDados() {
             let email = document.getElementById('email').value
             let senha = document.getElementById('senha').value
@@ -86,7 +83,7 @@
                     headers: {
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify({ email, senha, adm })
+                    body: JSON.stringify({ email, senha})
                 })
 
                 let data = await res.json()
