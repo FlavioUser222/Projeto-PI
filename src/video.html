@@ -83,11 +83,135 @@
 
     }
 
-    #descricao{
+    #descricao {
         font-size: 30px;
         font-weight: 500;
     }
 
+    body {
+        background: #ffffff;
+        color: #333;
+        font-size: 20px;
+    }
+
+    img {
+        width: 100%;
+    }
+
+    footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 40px;
+        background-color: #7a7777;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: translateY(100%);
+        transition: transform 0.3s ease;
+    }
+
+    footer.show {
+        transform: translateY(0);
+    }
+
+    .acessibilidade {
+        position: fixed;
+        right: 40px;
+        bottom: 50px;
+        z-index: 100;
+    }
+
+    .acessibilidade a>img {
+        width: 70px;
+        height: 70px;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+
+    .acessibilidade a>img:hover {
+        transform: scale(1.1);
+    }
+
+    .options-acessibilidade {
+        display: none;
+        position: absolute;
+        bottom: 80px;
+        right: 0;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        padding: 10px;
+        flex-direction: column;
+        gap: 8px;
+        width: 250px;
+        text-align: left;
+        animation: fadeIn 0.2s ease-in-out;
+    }
+
+    .options-acessibilidade::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        right: 20px;
+        border-width: 10px;
+        border-style: solid;
+        border-color: #fff transparent transparent transparent;
+    }
+
+    .options-acessibilidade a {
+        color: #333;
+        text-decoration: none;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 8px;
+        border-radius: 6px;
+        transition: background 0.2s;
+    }
+
+    .options-acessibilidade a:hover {
+        background: #f2f2f2;
+    }
+
+    body.alto-contraste {
+        background-color: #000 !important;
+        color: #fff !important;
+    }
+
+    body.alto-contraste header,
+    body.alto-contraste footer {
+        background-color: #000 !important;
+        color: #fff !important;
+    }
+
+    body.alto-contraste a {
+        color: #ff0 !important;
+    }
+
+    body.alto-contraste .videoCard {
+        background-color: #111 !important;
+        box-shadow: 0 0 5px #fff !important;
+    }
+
+    body.alto-contraste input,
+    body.alto-contraste select {
+        background-color: #222 !important;
+        color: #fff !important;
+        border: 1px solid #fff !important;
+    }
+
+    body.alto-contraste .options-acessibilidade {
+        background-color: #000 !important;
+        border: 1px solid #fff !important;
+    }
+
+    body.alto-contraste .options-acessibilidade a:hover {
+        background-color: #222 !important;
+    }
 </style>
 
 <body>
@@ -99,7 +223,23 @@
     <div class="goBack">
         <a href="inclusive.html"><img src="../imagens/seta-esquerda.png" alt="Seta de Voltar"></a>
     </div>
+
     <div class="container">
+
+        <div class="acessibilidade">
+            <a href="javascript:void(0)" onclick="clickAcessibilidade()"><img src="../imagens/acessibilidade.png"
+                    alt=""></a>
+            <div class="options-acessibilidade" id="optionsAcessibilidade">
+                <a href="javascript:void(0)" id="btnContraste"><img src="../imagens/contrast.png"
+                        alt="Ícone contraste">Alto contraste</a>
+                <a href="javascript:void(0)" id="btnMais"><img src="../imagens/mais.png" alt="Simbolo soma">Aumentar a
+                    fonte</a>
+                <a href="javascript:void(0)" id="btnMenos"><img src="../imagens/minus-big-symbol.png"
+                        alt="Simbolo de subtração">Diminuir a fonte</a>
+                <a href="javascript:void(0)"><img src="../imagens/color-blindness-test.png"
+                        alt="Ícone daltonismo">Daltonismo</a>
+            </div>
+        </div>
 
         <h1 id="tituloVideo"></h1>
         <video id="videoPlayer" controls class="video">
@@ -107,7 +247,7 @@
         </video>
 
         <p id="descricao"></p>
-    
+
     </div>
 
 
@@ -116,6 +256,8 @@
     <script>
         const params = new URLSearchParams(window.location.search);
         const videoId = params.get('id');
+        let fontSize = parseInt(localStorage.getItem('fontSize'), 10) || 20
+
 
         if (videoId) {
             fetch('https://projeto-pi-onrender.onrender.com/videos')
@@ -146,6 +288,76 @@
                     }
                 });
         }
+
+
+        function clickAcessibilidade() {
+            const options = document.getElementById("optionsAcessibilidade");
+            const isVisible = options.style.display === "flex";
+            options.style.display = isVisible ? "none" : "flex";
+        }
+
+        function autoContraste() {
+            document.body.classList.toggle('alto-contraste')
+            if (document.body.classList.contains('alto-contraste')) {
+                localStorage.setItem('modoContraste', 'ativo');
+            } else {
+                localStorage.removeItem('modoContraste');
+            }
+        }
+
+        function aplicarTamanhoDaFonte() {
+            document.body.style.fontSize = fontSize + 'px'
+            localStorage.setItem('fontSize', fontSize)
+        }
+
+        function aumentarFonte(e) {
+            if (e && e.preventDefault) e.preventDefault()
+
+            if (fontSize < 32) {
+                fontSize += 2
+                aplicarTamanhoDaFonte()
+            }
+        }
+        function diminuirFonte(e) {
+
+            if (e && e.preventDefault) e.preventDefault()
+            if (fontSize > 20) {
+                fontSize -= 2
+                aplicarTamanhoDaFonte()
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('btnContraste').addEventListener('click', autoContraste)
+
+            const btnMais = document.getElementById('btnMais');
+            const btnMenos = document.getElementById('btnMenos');
+
+            if (btnMais) btnMais.addEventListener('click', aumentarFonte);
+            if (btnMenos) btnMenos.addEventListener('click', diminuirFonte);
+            aplicarTamanhoDaFonte()
+
+            if (localStorage.getItem('modoContraste') === 'ativo') {
+                document.body.classList.add('alto-contraste');
+            }
+
+        })
+
+        window.addEventListener('scroll', () => {
+            const footer = document.querySelector('footer')
+            const scrollTop = window.scrollY + window.innerHeight
+            const docHeight = document.documentElement.scrollHeight
+
+            if (scrollTop >= docHeight - 10) {
+                footer.classList.add('show');
+            } else {
+                footer.classList.remove('show');
+            }
+        })
+
+
+
+
     </script>
 </body>
 
