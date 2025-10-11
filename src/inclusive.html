@@ -233,6 +233,22 @@
         padding: 5px;
     }
 
+    .buttons-opt li:hover {
+        background-color: #5e5e5e;
+        transition: background 0.2s;
+    }
+
+    .buttons-opt li.ativo {
+        background-color: #110c0c;
+    }
+
+    .buttons-opt li.ativo a {
+        color: #fff;
+        font-weight: bold;
+    }
+
+
+
     .buttons-opt li {
         border-radius: 30px;
         background-color: #7c7c7c;
@@ -322,13 +338,10 @@
         </div>
 
         <div class="buttons-opt">
-            <ul>
-                <li><a href="">Celular</a></li>
-                <li><a href="">Computador</a></li>
-                <li><a href="">Compras online</a></li>
-                <li><a href="">Pagamentos</a></li>
-            </ul>
+            <ul id="lista-categorias"></ul>
+
         </div>
+
         <div class="content">
             <h1 class="titulo1">Conheça nossos cursos</h1>
             <div class="content-videos" id="content-videos"></div>
@@ -356,6 +369,7 @@
 
     <script>
         let todosVideos = []
+        let categoriasGlobais = []
         let fontSize = parseInt(localStorage.getItem('fontSize'), 10) || 20
 
         async function mostrarVideo() {
@@ -447,6 +461,62 @@
             }
         }
 
+        function filtrarPorCategoria(categoriaNome) {
+            if (!categoriaNome) {
+                exibirVideos(todosVideos);
+                return;
+            }
+
+            const categoriaSelecionada = categoriasGlobais.find(cat => cat.nome === categoriaNome);
+            if (!categoriaSelecionada) {
+                exibirVideos([]);
+                return;
+            }
+
+            const filtrados = todosVideos.filter(video =>
+                video.categoria_id === categoriaSelecionada.id
+            );
+
+            exibirVideos(filtrados);
+        }
+
+
+        async function carregarCategorias() {
+            try {
+                const res = await fetch('https://projeto-pi-onrender.onrender.com/categorias');
+                const categorias = await res.json();
+                categoriasGlobais = categorias;
+                const lista = document.getElementById('lista-categorias');
+                lista.innerHTML = ''
+
+                const liTodos = document.createElement('li');
+                liTodos.innerHTML = `<a href="#" data-categoria="">Todos</a>`;
+                lista.appendChild(liTodos);
+
+                categorias.forEach(cat => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<a href="#" data-categoria="${cat.nome}">${cat.nome}</a>`;
+                    lista.appendChild(li);
+                });
+
+                const botoesCategoria = lista.querySelectorAll('a');
+                botoesCategoria.forEach(botao => {
+                    botao.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const categoria = botao.getAttribute('data-categoria');
+                        filtrarPorCategoria(categoria);
+                        lista.querySelectorAll('li').forEach(li => li.classList.remove('ativo'))
+                        botao.parentElement.classList.add('ativo')
+
+                    });
+                });
+
+            } catch (error) {
+                console.error('Erro ao carregar categorias:', error);
+            }
+        }
+
+
 
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -462,6 +532,7 @@
             aplicarTamanhoDaFonte()
 
             mostrarVideo()
+            carregarCategorias()
 
             if (localStorage.getItem('modoContraste') === 'ativo') {
                 document.body.classList.add('alto-contraste');
