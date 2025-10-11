@@ -308,6 +308,55 @@
     body.alto-contraste .options-acessibilidade a:hover {
         background-color: #222 !important;
     }
+
+
+    body.protanopia {
+        background-color: #f0f0f0 !important;
+        color: #222 !important;
+    }
+
+    body.protanopia header,
+    body.protanopia footer {
+        background-color: #0077cc !important;
+        color: #fff !important;
+    }
+
+    body.protanopia .videoCard {
+        background-color: #e0e0e0 !important;
+        border: 2px solid #555 !important;
+    }
+
+    body.deuteranopia {
+        background-color: #fff7e6 !important;
+        color: #333 !important;
+    }
+
+    body.deuteranopia header,
+    body.deuteranopia footer {
+        background-color: #0066cc !important;
+        color: #fff !important;
+    }
+
+    body.deuteranopia .videoCard {
+        background-color: #ffe0b3 !important;
+        border: 2px solid #663300 !important;
+    }
+
+    body.tritanopia {
+        background-color: #f9f9f9 !important;
+        color: #222 !important;
+    }
+
+    body.tritanopia header,
+    body.tritanopia footer {
+        background-color: #33aa33 !important;
+        color: #fff !important;
+    }
+
+    body.tritanopia .videoCard {
+        background-color: #ffccdd !important;
+        border: 2px solid #555 !important;
+    }
 </style>
 
 <body>
@@ -333,7 +382,7 @@
                     fonte</a>
                 <a href="javascript:void(0)" id="btnMenos"><img src="../imagens/minus-big-symbol.png"
                         alt="Simbolo de subtração">Diminuir a fonte</a>
-                <a href="javascript:void(0)"><img src="../imagens/color-blindness-test.png"
+                <a href="javascript:void(0)" id="btnDaltonismo"><img src="../imagens/color-blindness-test.png"
                         alt="Ícone daltonismo">Daltonismo</a>
             </div>
         </div>
@@ -462,6 +511,43 @@
             }
         }
 
+
+        function aplicarDaltonismo(tipo) {
+            document.body.classList.remove('protanopia', 'deuteranopia', 'tritanopia')
+
+            if (tipo) {
+                document.body.classList.add(tipo)
+                localStorage.setItem('modoDaltonismo', tipo)
+            } else {
+                localStorage.removeItem('modoDaltonismo')
+            }
+        }
+
+        function ativarDaltonismo() {
+            const modoAtual = localStorage.getItem('modoDaltonismo')
+            let novoModo;
+
+            if (modoAtual === 'protanopia') {
+                novoModo = 'deuteranopia'
+                alert('🔵 Modo Daltonismo: Deuteranopia ativado')
+            } else if (modoAtual === 'deuteranopia') {
+                novoModo = 'tritanopia'
+                alert('🟢 Modo Daltonismo: Tritanopia ativado')
+            } else if (modoAtual === 'tritanopia') {
+                novoModo = null;
+                alert('🔁 Modo Daltonismo desativado')
+            } else {
+                novoModo = 'protanopia'
+                alert('🔴 Modo Daltonismo: Protanopia ativado')
+            }
+
+            aplicarDaltonismo(novoModo)
+        }
+
+        document.getElementById('btnDaltonismo').addEventListener('click', ativarDaltonismo);
+
+
+
         function filtrarPorCategoria(categoriaNome) {
             if (!categoriaNome) {
                 exibirVideos(todosVideos);
@@ -539,6 +625,8 @@
                 document.body.classList.add('alto-contraste');
             }
 
+            const salvo = localStorage.getItem('modoDaltonismo');
+            if (salvo) aplicarDaltonismo(salvo)
         })
 
         window.addEventListener('scroll', () => {
