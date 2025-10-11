@@ -293,14 +293,15 @@
     }
 
     body.alto-contraste input,
-    body.alto-contraste select {
+    body.alto-contraste select,
+    body.alto-contraste .input-Img {
         background-color: #222 !important;
         color: #fff !important;
         border: 1px solid #fff !important;
     }
 
     body.alto-contraste .options-acessibilidade {
-        background-color: #000 !important;
+        background-color: #666666 !important;
         border: 1px solid #fff !important;
     }
 
@@ -447,7 +448,7 @@
         function aumentarFonte(e) {
             if (e && e.preventDefault) e.preventDefault()
 
-            if (fontSize < 32) {
+            if (fontSize < 26) {
                 fontSize += 2
                 aplicarTamanhoDaFonte()
             }
