@@ -393,7 +393,7 @@
         </div>
 
         <div class="content">
-            <h1 class="titulo1">Conheça nossos cursos</h1>
+            <h1 class="titulo1">Conheça nossos tutoriais</h1>
             <div class="content-videos" id="content-videos"></div>
         </div>
 
@@ -452,9 +452,7 @@
                 videoElement.style.borderRadius = '8px'
                 videoElement.style.maxWidth = '100%'
                 videoElement.style.height = '180px'
-
                 titulo.innerText = video.nome
-
 
                 link.appendChild(videoElement);
                 link.appendChild(titulo);
@@ -525,7 +523,7 @@
         function ativarDaltonismo() {
             const modoAtual = localStorage.getItem('modoDaltonismo')
             let novoModo;
-
+        
             if (modoAtual === 'protanopia') {
                 novoModo = 'deuteranopia'
                 alert('🔵 Modo Daltonismo: Deuteranopia ativado')
