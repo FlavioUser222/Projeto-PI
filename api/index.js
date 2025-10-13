@@ -189,10 +189,7 @@ app.post('/login', async (req, res) => {
     console.error(error)
     res.status(500).json({ error: error.message })
   }
-
-
 })
-
 
 app.get('/favoritos', async (req, res) => {
   try {
