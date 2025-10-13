@@ -292,7 +292,9 @@
                     let videoElement = document.createElement('video');
                     let videoCard = document.createElement('div')
                     videoCard.className = "videoCard"
-
+                    let h1 = document.createElement('h1')
+                    h1.textContent = video.nome
+            
                     // Define os atributos do vídeo
                     videoElement.src = `https://projeto-pi-onrender.onrender.com/uploads/${video.video}`;
                     videoElement.controls = true;
@@ -307,6 +309,8 @@
                     divButtons.innerHTML = `<button onclick="abrirModal(${video.id})">Editar</button>
                     <button onclick="excluirVideo(${video.id})">Excluir</button>`
 
+
+                    videoCard.appendChild(h1)
                     videoCard.appendChild(videoElement)
                     videoCard.appendChild(divButtons)
 
