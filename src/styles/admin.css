@@ -1,44 +1,49 @@
-  * {
-        padding: 0;
-        margin: 0;
-        box-sizing: border-box;
-    }
+   @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
-    body {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-        color: white;
-    }
 
-    .container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        max-width: 500px;
-        width: 100%;
-        height: 500px;
-        background-color: #242222;
-        border-radius: 10px;
-        gap: 10px;
-    }
 
-    h1 {
-        padding-bottom: 30px;
-    }
+   * {
+       padding: 0;
+       margin: 0;
+       box-sizing: border-box;
+       font-family: "Inter", sans-serif;
+   }
 
-    input {
-        padding: 8px 12px;
-    }
+   body {
+       display: flex;
+       flex-direction: column;
+       align-items: center;
+       justify-content: center;
+       min-height: 100vh;
+       color: white;
+   }
 
-    button {
-        background-color: rgb(255, 255, 255);
-        padding: 10px 20px;
-    }
+   .container {
+       display: flex;
+       flex-direction: column;
+       align-items: center;
+       justify-content: center;
+       max-width: 500px;
+       width: 100%;
+       height: 500px;
+       background-color: #242222;
+       border-radius: 10px;
+       gap: 10px;
+   }
 
-    a {
-        color: rgb(136, 62, 255);
-    }
+   h1 {
+       padding-bottom: 30px;
+   }
+
+   input {
+       padding: 8px 12px;
+   }
+
+   button {
+       background-color: rgb(255, 255, 255);
+       padding: 10px 20px;
+   }
+
+   a {
+       color: rgb(136, 62, 255);
+   }
