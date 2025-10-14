@@ -267,13 +267,16 @@
 
     body.alto-contraste {
         background-color: #000 !important;
-        color: #fff !important;
+        color: #ff0 !important;
+    }
+    body.alto-contraste input::placeholder {
+        color: #ff0 !important;
     }
 
     body.alto-contraste header,
     body.alto-contraste footer {
-        background-color: #000 !important;
-        color: #fff !important;
+        background-color: #7c7c7c !important;
+        color: #ff0 !important;
     }
 
     body.alto-contraste a {
@@ -291,6 +294,7 @@
         background-color: #666666 !important;
         color: #fff !important;
         border: 1px solid #fff !important;
+        border-radius: 10px;
     }
 
     body.alto-contraste .options-acessibilidade {
