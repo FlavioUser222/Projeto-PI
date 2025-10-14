@@ -186,7 +186,7 @@
             aplicarDaltonismo(novoModo)
         }
 
-        document.getElementById('btnDaltonismo').addEventListener('click', ativarDaltonismo);
+        document.getElementById('btnDaltonismo').addEventListener('click', ativarDaltonismo)
 
 
 
@@ -212,15 +212,15 @@
 
         async function carregarCategorias() {
             try {
-                const res = await fetch('https://projeto-pi-onrender.onrender.com/categorias');
+                const res = await fetch('https://projeto-pi-onrender.onrender.com/categorias')
                 const categorias = await res.json();
                 categoriasGlobais = categorias;
                 const lista = document.getElementById('lista-categorias');
                 lista.innerHTML = ''
 
-                const liTodos = document.createElement('li');
-                liTodos.innerHTML = `<a href="#" data-categoria="">Todos</a>`;
-                lista.appendChild(liTodos);
+                const liTodos = document.createElement('li')
+                liTodos.innerHTML = `<a href="#" data-categoria="">Todos</a>`
+                lista.appendChild(liTodos)
 
                 categorias.forEach(cat => {
                     const li = document.createElement('li');
@@ -256,8 +256,8 @@
             const btnMais = document.getElementById('btnMais');
             const btnMenos = document.getElementById('btnMenos');
 
-            if (btnMais) btnMais.addEventListener('click', aumentarFonte);
-            if (btnMenos) btnMenos.addEventListener('click', diminuirFonte);
+            if (btnMais) btnMais.addEventListener('click', aumentarFonte)
+            if (btnMenos) btnMenos.addEventListener('click', diminuirFonte)
             aplicarTamanhoDaFonte()
 
             mostrarVideo()

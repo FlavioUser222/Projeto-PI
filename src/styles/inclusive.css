@@ -9,7 +9,7 @@
         background: #ffffff;
         color: #333;
         font-size: 20px;
-    }
+            }
 
     img {
         width: 100%;
@@ -20,8 +20,7 @@
         padding: 12px 20px;
         display: flex;
         align-items: center;
-        gap: 500px;
-        
+        justify-content:space-evenly;
     }
 
     header img {
@@ -227,7 +226,6 @@
         header {
             flex-direction: column;
             gap: 30px;
-            align-items: flex-start;
         }
 
         .input-Img {
