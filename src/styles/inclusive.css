@@ -201,6 +201,7 @@
     @media (max-width: 768px) {
         header {
             flex-direction: column;
+            gap: 30px;
             align-items: flex-start;
         }
 
