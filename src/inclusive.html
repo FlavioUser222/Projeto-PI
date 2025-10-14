@@ -126,10 +126,13 @@
             exibirVideos(filtrados);
         }
 
+
         function clickAcessibilidade() {
             const options = document.getElementById("optionsAcessibilidade");
             const isVisible = options.style.display === "flex";
+
             options.style.display = isVisible ? "none" : "flex";
+
         }
 
         function autoContraste() {
@@ -162,9 +165,6 @@
                 aplicarTamanhoDaFonte()
             }
         }
-
-
-
 
         function aplicarDaltonismo(tipo) {
             document.body.classList.remove('protanopia', 'deuteranopia', 'tritanopia')
