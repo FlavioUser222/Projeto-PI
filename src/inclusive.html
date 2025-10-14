@@ -31,6 +31,7 @@
                         alt="Simbolo de subtração">Diminuir a fonte</a>
                 <a href="javascript:void(0)" id="btnDaltonismo"><img src="../imagens/color-blindness-test.png"
                         alt="Ícone daltonismo">Daltonismo</a>
+                <a href="javascript:void(0)" id="btnTextoFala"><img src="../imagens/auditory.png" alt="Ícone daltonismo">Texto para fala</a>
             </div>
         </div>
 
@@ -208,6 +209,24 @@
 
             exibirVideos(filtrados);
         }
+
+
+        function lerTextoPagina() {
+            const texto = document.body.innerText;
+
+            window.speechSynthesis.cancel();
+
+            const fala = new SpeechSynthesisUtterance(texto);
+            fala.lang = "pt-BR";
+            fala.rate = 1;
+            fala.pitch = 1;
+
+            window.speechSynthesis.speak(fala);
+        }
+
+        document.getElementById('btnTextoFala').addEventListener('click', lerTextoPagina);
+
+
 
 
         async function carregarCategorias() {
