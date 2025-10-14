@@ -55,9 +55,10 @@
             <div class="redes">
                 <a href="htpps://www.facebook.com/inclusive" target="_blank">Facebook<img src="../imagens/facebook.png"
                         alt="Ícone facebook"></a>
-                <a href="https://www.gmail.com/inclusive" target="_blank">Gmail<img src="../imagens/gmail.png" alt="Ícone gmail"></a>
-                <a href="https://www.instagram.com/inclusive" target="_blank">Instagram<img src="../imagens/instagram.png"
-                        alt="Ícone instagram"></a>
+                <a href="https://www.gmail.com/inclusive" target="_blank">Gmail<img src="../imagens/gmail.png"
+                        alt="Ícone gmail"></a>
+                <a href="https://www.instagram.com/inclusive" target="_blank">Instagram<img
+                        src="../imagens/instagram.png" alt="Ícone instagram"></a>
             </div>
 
         </footer>
@@ -90,10 +91,10 @@
                 let videoCard = document.createElement('div');
                 let titulo = document.createElement('p');
                 let link = document.createElement('a');
+                let tooltip = document.createElement('div');
                 link.href = `video.html?id=${video.id}`
                 link.style.textDecoration = 'none';
                 link.style.color = 'inherit';
-
 
 
                 videoCard.className = "videoCard";
@@ -102,11 +103,16 @@
                 videoElement.style.maxWidth = '100%'
                 videoElement.style.height = '180px'
                 titulo.innerText = video.nome
+                tooltip.className = 'tooltip';
+                tooltip.innerText = 'Clique para assitir!';
 
-                link.appendChild(videoElement);
-                link.appendChild(titulo);
-                videoCard.appendChild(link);
-                videosContent.appendChild(videoCard);
+
+
+                link.appendChild(videoElement)
+                link.appendChild(titulo)
+                videoCard.appendChild(link)
+                videoCard.appendChild(tooltip)
+                videosContent.appendChild(videoCard)
             });
         }
 
@@ -156,6 +162,8 @@
                 aplicarTamanhoDaFonte()
             }
         }
+
+
 
 
         function aplicarDaltonismo(tipo) {
