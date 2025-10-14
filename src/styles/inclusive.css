@@ -26,6 +26,7 @@
      display: flex;
      align-items: center;
      justify-content: space-evenly;
+
  }
 
  header img {
@@ -252,7 +253,7 @@
          flex-direction: column;
          gap: 30px;
      }
-     
+
      .input-Img {
          width: 100%;
          margin-top: 10px;
