@@ -42,7 +42,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage })
 
-
 app.get('/videos', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM videos ORDER BY id DESC');
@@ -103,7 +102,7 @@ app.delete('/video/:id', async (req, res) => {
   }
 });
 
-app.put(
+app.patch(
   '/video/:id',
   upload.fields([
     { name: 'video', maxCount: 1 },
