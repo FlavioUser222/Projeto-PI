@@ -169,7 +169,7 @@
             formData.append('categoria_id', categoria)
             formData.append('thumbnail', thumbFile)
 
-            let res = await fetch(`https://projeto-pi-onrender.onrender.com/video/${id}`, {
+            let res = await fetch(`https://projeto-pi-onrender.onrender.com/videos/${id}`, {
                 method: "PUT",
                 body: formData
             })
