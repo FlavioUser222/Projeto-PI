@@ -22,11 +22,7 @@ if (!fs.existsSync(uploadsDir)) {
 
 const app = express()
 
-app.use(cors({
-  origin: ['http://127.0.0.1:5500', 'http://localhost:5500'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type'],
-}))
+app.use(cors())
 
 
 app.use('/uploads', express.static('uploads'))
