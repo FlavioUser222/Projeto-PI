@@ -13,8 +13,8 @@
     <div class="container">
         <h1>Entrar no sistema</h1>
 
-        <input type="text" id="email" placeholder="Email">
-        <input type="password" id="senha" placeholder="Senha">
+        <input type="text" id="email" placeholder="Email" autocomplete="off">
+        <input type="password" id="senha" placeholder="Senha" autocomplete="off">
         <button onclick="postarDados()">Entrar</button>
     </div>
 
@@ -43,8 +43,13 @@
                 console.log(data)
 
                 if (res.ok) {
+                    document.getElementById("email").value = ""
+                    document.getElementById("senha").value = ""
                     alert("Login realizado com sucesso!")
-                    window.location.href = "index.html"
+
+                    setTimeout(() => {
+                        window.location.href = "index.html"
+                    }, 200)
 
                 } else {
                     alert(data.error || "Erro ao fazer login!");
@@ -53,7 +58,14 @@
             } catch (error) {
                 alert('Erro ao realizar login')
             }
-    
+
+
+
+
+
+
+
+
         }
 
 

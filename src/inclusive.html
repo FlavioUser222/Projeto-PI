@@ -45,26 +45,26 @@
         </div>
 
 
-        <footer>
-            <div class="footer-Img">
-                <img src="" alt="">
-            </div>
-
-            <div class="redes">
-                <a href="htpps://www.facebook.com/inclusive" target="_blank">Facebook<img src="../imagens/facebook.png"
-                        alt="Ícone facebook"></a>
-                <a href="https://www.gmail.com/inclusive" target="_blank">Gmail<img src="../imagens/gmail.png"
-                        alt="Ícone gmail"></a>
-                <a href="https://www.instagram.com/inclusive" target="_blank">Instagram<img
-                        src="../imagens/instagram.png" alt="Ícone instagram"></a>
-                <a href="admin.html"><img src="../imagens/contexto.png" alt="Ícone tela administrador"></a>
-
-            </div>
-
-        </footer>
-
 
     </div>
+
+    <footer>
+        <div class="footer-Img">
+            <img src="" alt="">
+        </div>
+
+        <div class="redes">
+            <a href="htpps://www.facebook.com/inclusive" target="_blank">Facebook<img src="../imagens/facebook.png"
+                    alt="Ícone facebook"></a>
+            <a href="https://www.gmail.com/inclusive" target="_blank">Gmail<img src="../imagens/gmail.png"
+                    alt="Ícone gmail"></a>
+            <a href="https://www.instagram.com/inclusive" target="_blank">Instagram<img src="../imagens/instagram.png"
+                    alt="Ícone instagram"></a>
+            <a href="admin.html"><img src="../imagens/contexto.png" alt="Ícone tela administrador"></a>
+
+        </div>
+
+    </footer>
 
 
     <script>
@@ -274,6 +274,16 @@
             }
         }
 
+
+
+        window.addEventListener('scroll', () => {
+            const footer = document.querySelector('footer');
+            if (window.scrollY + window.innerHeight >= document.body.offsetHeight - 100) {
+                footer.classList.add('show');
+            } else {
+                footer.classList.remove('show');
+            }
+        });
 
 
 
