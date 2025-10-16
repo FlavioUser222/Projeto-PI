@@ -15,11 +15,6 @@ const pool = new Pool({
 });
 
 
-const uploadsDir = 'uploads/'
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir)
-}
-
 const app = express()
 
 app.use(cors())
@@ -151,14 +146,6 @@ app.put(
     }
   }
 )
-
-
-
-
-
-
-
-
 
 
 
