@@ -27,6 +27,7 @@ app.use(cors())
 
 app.use('/uploads', express.static('uploads'))
 app.use(express.urlencoded({ extended: true }))
+
 app.use(express.json())
 
 
@@ -46,13 +47,16 @@ const storage = multer.diskStorage({
 const upload = multer({ storage })
 
 app.get('/videos', async (req, res) => {
+
   try {
-    const result = await pool.query('SELECT * FROM videos ORDER BY id DESC');
+    const result = await pool.query('SELECT * FROM videos ORDER BY id DESC')
     res.json(result.rows);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: err.message })
   }
-});
+
+})
+
 
 app.post('/video', upload.fields([
   { name: 'video', maxCount: 1 },
@@ -146,7 +150,13 @@ app.put(
       res.status(500).json({ error: err.message });
     }
   }
-);
+)
+
+
+
+
+
+
 
 
 
@@ -196,6 +206,7 @@ app.post('/login', async (req, res) => {
     res.status(500).json({ error: error.message })
   }
 })
+
 
 app.get('/favoritos', async (req, res) => {
   try {
