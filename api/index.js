@@ -16,9 +16,11 @@ const pool = new Pool({
 
 
 const uploadsDir = 'uploads/'
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir)
-}
+
+
+// if (!fs.existsSync(uploadsDir)) {
+//   fs.mkdirSync(uploadsDir)
+// }
 
 const app = express()
 
