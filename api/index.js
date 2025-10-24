@@ -154,8 +154,6 @@ app.put(
   }
 )
 
-
-
 app.get('/cadastros', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM cadastros');
@@ -251,13 +249,31 @@ app.get('/avaliacoes', async (req, res) => {
 
 app.post('/avaliacao', async (req, res) => {
   try {
-    const { video_id, user_id, nota } = req.body
-    await pool.query('INSERT INTO avaliacoes (video_id,user_id,nota) VALUES ($1,$2,$3)', [video_id, user_id, nota]);
-    res.send('Avaliaçao enviada com sucesso!')
+    const { video_id, user_id, nota } = req.body;
+
+    const check = await pool.query(
+      'SELECT * FROM avaliacoes WHERE video_id = $1 AND user_id = $2',
+      [video_id, user_id]
+    );
+
+    if (check.rows.length > 0) {
+      return res.status(400).json({
+        error: 'Você já avaliou este vídeo!',
+      });
+    }
+
+    await pool.query(
+      'INSERT INTO avaliacoes (video_id, user_id, nota) VALUES ($1, $2, $3)',
+      [video_id, user_id, nota]
+    );
+
+    res.json({ message: 'Avaliação enviada com sucesso!' });
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    console.error('Erro ao inserir avaliação:', err);
+    res.status(500).json({ error: err.message });
   }
-})
+});
+
 
 app.listen(3000, () => {
   console.log('Servidor rodando na porta 3000')
