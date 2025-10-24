@@ -247,6 +247,24 @@ app.get('/avaliacoes', async (req, res) => {
   }
 })
 
+app.get('/avaliacoes/percentual', async (req, res) => {
+  try {
+    const result = await pool.query(`SELECT 
+          video_id,
+          COUNT(*) AS total_avaliacoes,
+          AVG(nota) AS media,
+          (AVG(nota)/5.0 * 100) AS percentual
+      FROM avaliacoes
+      GROUP BY video_id`)
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+})
+
+
+
+
 app.post('/avaliacao', async (req, res) => {
   try {
     const { video_id, user_id, nota } = req.body
