@@ -266,7 +266,7 @@ app.post('/doador', async (req, res) => {
 
   const { nome, celular, hrInicial, hrFinal } = req.body
   try {
-    const result = await pool.query(`INSERT INTO doadores (nome,telefone,hora_Inicial,hora_Final) VALUES ($1,$2,$3,$4)`,
+    const result = await pool.query(`INSERT INTO doadores (nome,telefone,horainicial,horafinal) VALUES ($1,$2,$3,$4)`,
       [nome, celular, hrInicial, hrFinal])
     res.send('doadores adicionado com sucesso!')
   } catch (err) {
