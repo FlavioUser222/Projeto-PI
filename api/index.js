@@ -308,7 +308,7 @@ WHERE
       let numero = doador.telefone.replace(/\D/g, '');
 
       if (!numero.startsWith('55')) {
-        numero = '55' + numero;
+        numero = '+55' + numero;
       }
 
       console.log(`https://wa.me/${numero}`)
