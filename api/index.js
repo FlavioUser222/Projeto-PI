@@ -284,6 +284,38 @@ app.get('/doadores', async (req, res) => {
 })
 
 
+app.get('/doadores/disponiveis', async (req, res) => {
+  try {
+    const agora = new Date();
+    const horaAtual = agora.toTimeString().slice(0, 5)
+
+    const result = await pool.query(
+      `SELECT * FROM doadores 
+       WHERE $1::time BETWEEN horainicial::time AND horafinal::time`,
+      [horaAtual]
+    );
+
+    const doadoresComWhatsApp = result.rows.map(doador => {
+      return {
+        nome: doador.nome,
+        telefone: doador.telefone,
+        disponivel: `${doador.horainicial} às ${doador.horafinal}`,
+        linkWhatsApp: `https://wa.me/${doador.telefone.replace(/\D/g, '')}` // remove caracteres não numéricos
+      };
+    });
+
+    res.json(doadoresComWhatsApp);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+
+
+
+
+
 
 
 
