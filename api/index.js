@@ -262,6 +262,35 @@ app.get('/avaliacoes/percentual', async (req, res) => {
   }
 })
 
+app.post('/doador', async (req, res) => {
+
+  const { nome, celular, hrInicial, hrFinal } = req.body
+  try {
+    const result = await pool.query(`INSERT INTO doadores (nome,telefone,hora_inicial,hora_final)VALUES($1,$2,$3,$4)`,
+      [nome, celular, hrInicial, hrFinal])
+    res.send('doadores adicionado com sucesso!')
+
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+})
+
+app.get('/doadores', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM doadores');
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+})
+
+
+
+
+
+
+
 
 
 
