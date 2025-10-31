@@ -294,10 +294,10 @@ app.get('/doadores/disponiveis', async (req, res) => {
 FROM doadores 
 WHERE 
   (horainicial <= horafinal 
-   AND ($1::time + interval '3 hour') BETWEEN horainicial::time AND horafinal::time)
+   AND ($1::time - interval '1 hour') BETWEEN horainicial::time AND horafinal::time)
   OR
   (horainicial > horafinal 
-   AND (($1::time + interval '3 hour') >= horainicial::time OR ($1::time + interval '3 hour') <= horafinal::time));
+   AND (($1::time - interval '1 hour') >= horainicial::time OR ($1::time - interval '1 hour') <= horafinal::time));
 `,
       [horaAtual]
     );
