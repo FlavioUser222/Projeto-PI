@@ -288,19 +288,31 @@ app.get('/doadores/disponiveis', async (req, res) => {
   try {
     const agora = new Date();
     const horaAtual = agora.toTimeString().slice(0, 5)
-
+    
     const result = await pool.query(
       `SELECT * FROM doadores 
-       WHERE $1::time BETWEEN horainicial::time AND horafinal::time`,
+       WHERE 
+         (horainicial <= horafinal AND $1::time BETWEEN horainicial::time AND horafinal::time)
+         OR
+         (horainicial > horafinal AND ($1::time >= horainicial::time OR $1::time <= horafinal::time))`,
       [horaAtual]
     );
 
+
     const doadoresComWhatsApp = result.rows.map(doador => {
+
+      let numero = doador.telefone.replace(/\D/g, '');
+
+      if (!numero.startsWith('55')) {
+        numero = '55' + numero;
+      }
+
+
       return {
         nome: doador.nome,
         telefone: doador.telefone,
         disponivel: `${doador.horainicial} às ${doador.horafinal}`,
-        linkWhatsApp: `https://wa.me/${doador.telefone.replace(/\D/g, '')}` // remove caracteres não numéricos
+        linkWhatsApp: `https://wa.me/${numero}` // remove caracteres não numéricos
       };
     });
 
