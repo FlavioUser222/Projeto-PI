@@ -307,12 +307,11 @@ WHERE
 
       let numero = doador.telefone.replace(/\D/g, '');
 
-      if (!numero.startsWith('55')) {
+      if (!numero.startsWith('+55')) {
         numero = '+55' + numero;
       }
 
       console.log(`https://wa.me/${numero}`)
-
 
       return {
         nome: doador.nome,
@@ -327,18 +326,6 @@ WHERE
     res.status(500).json({ error: err.message });
   }
 });
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
