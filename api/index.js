@@ -187,7 +187,6 @@ app.post('/login', async (req, res) => {
       return res.status(404).json({ error: 'Usuário não encontrado!' })
     }
 
-
     res.json({
       message: 'Login realizado com sucesso!',
       user: result.rows[0]
