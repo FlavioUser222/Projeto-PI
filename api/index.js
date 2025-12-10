@@ -263,10 +263,10 @@ app.get('/avaliacoes/percentual', async (req, res) => {
 
 app.post('/doador', async (req, res) => {
 
-  const { nome, celular, hrInicial, hrFinal } = req.body
+  const { nome, celular, hrInicial, hrFinal ,cpf} = req.body
   try {
-    const result = await pool.query(`INSERT INTO doadores (nome,telefone,horainicial,horafinal) VALUES ($1,$2,$3,$4)`,
-      [nome, celular, hrInicial, hrFinal])
+    const result = await pool.query(`INSERT INTO doadores (nome,telefone,horainicial,horafinal,cpf) VALUES ($1,$2,$3,$4,$5)`,
+      [nome, celular, hrInicial, hrFinal,cpf])
     res.send('doadores adicionado com sucesso!')
   } catch (err) {
     res.status(500).json({ error: err.message });
